@@ -6,5 +6,64 @@
     "default": 10,
     "max": 50
   },
-  "mongodb": "mongodb://localhost:27017/caroneirodbdev"
+  "mongodb": "mongodb://mongo:27017/caroneirodbdev",
+  "authentication": {
+    "secret": "31f1d46d077910577741020160e6bc1e5e6e1bdd2d1622993d05e650ba8424e88e8c23e49a72a328ff351fd998bcbd976f1fec68b16f9748bd34d28e95e49bf63f34aab36ceed1ff630e26489f71e49446757b564f547432313200f6ebeb5896379f94e22385444665a2a808ea6d44fe06d5084d4ba694bbd1de1d67570603ef4ad5590dc7db766a231daab0819f007b5bd585dd47fbab379cda5a10a7ddb7d6fc4c6b4fef03c3beac6b5ac4751c33f76f3600b15e6b381e5ea32af17e451de6674c83fca19098afe1558728bb9ed8a227e72c503d59e111f91abceac61643dd6158f642059f1c6f024ba19ebd77b4f30fdb8ea62eaaea0c0f35eb7613922272",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "email",
+      "passwordField": "password"
+    },
+    "google": {
+      "clientID": "your google client id",
+      "clientSecret": "your google client secret",
+      "successRedirect": "/",
+      "scope": [
+        "profile openid email"
+      ]
+    },
+    "facebook": {
+      "clientID": "your facebook client id",
+      "clientSecret": "your facebook client secret",
+      "successRedirect": "/",
+      "scope": [
+        "public_profile",
+        "email"
+      ],
+      "profileFields": [
+        "id",
+        "displayName",
+        "first_name",
+        "last_name",
+        "email",
+        "gender",
+        "profileUrl",
+        "birthday",
+        "picture",
+        "permissions"
+      ]
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "feathers-jwt",
+      "httpOnly": false,
+      "secure": false
+    }
+  }
 }

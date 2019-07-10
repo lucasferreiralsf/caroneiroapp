@@ -1,0 +1,30 @@
+version: "3"
+services:
+ api:
+   container_name: caroneiro-nestjs-api
+   build:
+     context: ./caroneiro-backend
+     dockerfile: Dockerfile
+   volumes:
+     - ./caroneiro-backend:/api
+     - /api/node_modules
+   depends_on:
+     - mongo
+   ports:
+     - 3000:3000
+   networks:
+    - docker-caroneiro
+
+ mongo:
+   container_name: mongo
+   image: mongo:latest
+   ports:
+     - 27017:27017
+   volumes:
+     - ./data/mongodb/db:/data/db
+   networks:
+    - docker-caroneiro
+
+networks:
+ docker-caroneiro:
+   driver: bridge

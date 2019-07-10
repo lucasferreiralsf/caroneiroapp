@@ -1,30 +1,29 @@
 version: "3"
 services:
- api:
-   container_name: caroneiro-nestjs-api
-   build:
-     context: ./caroneiro-backend
-     dockerfile: Dockerfile
-   volumes:
-     - ./caroneiro-backend:/api
-     - /api/node_modules
-   depends_on:
-     - mongo
-   ports:
-     - 3000:3000
-   networks:
-    - docker-caroneiro
-
- mongo:
-   container_name: mongo
-   image: mongo:latest
-   ports:
-     - 27017:27017
-   volumes:
-     - ./data/mongodb/db:/data/db
-   networks:
-    - docker-caroneiro
-
-networks:
- docker-caroneiro:
-   driver: bridge
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    expose:
+      - "27017"
+      - "37017"
+    ports:
+      - 27017:27017
+      - 37017:37017
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null      
+    volumes:
+      - ./server/data:/data/db:rw
+    restart: always
+    command: --smallfiles
+  
+  server:
+    container_name: caroneiro_api
+    build: caroneiro-api
+    volumes:
+      - ./caroneiro-api/:/usr/src/app/:rw
+      - /usr/src/app/node_modules
+    ports:
+      - "3030:3030"
+    depends_on:
+      - mongo
