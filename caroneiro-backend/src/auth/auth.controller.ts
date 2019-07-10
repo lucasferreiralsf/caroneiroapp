@@ -20,6 +20,7 @@ import { IRegistrationStatus } from './interfaces/registration-status.interface'
 import { UserService } from '../user/user.service';
 import { Inject } from '@nestjs/common';
 import { debug } from 'util';
+import { IUser } from '../user/interfaces/user.interface';
 
 @ApiUseTags('auth')
 @Controller('auth')
@@ -30,7 +31,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  public async register(@Response() res, @Body() createUserDto: CreateUserDto) {
+  public async register(@Response() res, @Body() createUserDto: IUser) {
     const result = await this.authService.register(createUserDto);
     if (!result.success) {
       return res.status(HttpStatus.BAD_REQUEST).json(result);

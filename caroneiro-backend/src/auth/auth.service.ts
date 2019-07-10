@@ -7,12 +7,13 @@ import { UserService } from '../user/user.service';
 import { IUser } from '../user/interfaces/user.interface';
 import { IRegistrationStatus } from './interfaces/registration-status.interface';
 import { IJwtPayload } from './interfaces/jwt-payload.interface';
+import { CreateUserDto } from '../user/dto/user-create.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    @InjectModel('User') private readonly userModel: PassportLocalModel<IUser>,
+    // @InjectModel('User') private readonly userModel: PassportLocalModel<IUser>,
   ) {}
 
   async register(user: IUser) {
@@ -20,9 +21,9 @@ export class AuthService {
       success: true,
       message: 'user register',
     };
-    await this.userModel.register(
-      new this.userModel({
-        username: user.email,
+    /* await this.userModel.register(
+      new CreateUserDto({
+        firstName: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
       }),
@@ -33,7 +34,7 @@ export class AuthService {
           status = { success: false, message: err };
         }
       },
-    );
+    ); */
     return status;
   }
 

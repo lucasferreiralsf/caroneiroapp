@@ -11,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRoot('mongodb://mongo:27017/caroneiro'),
     TripModule,
     UserModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

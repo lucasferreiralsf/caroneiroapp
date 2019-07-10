@@ -19,6 +19,11 @@ export const UserSchema = new mongoose.Schema(
     },
     googleId: String,
     facebookId: String,
+    passengerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Passenger',
+      required: true,
+    },
   },
   { timestamps: true },
 );

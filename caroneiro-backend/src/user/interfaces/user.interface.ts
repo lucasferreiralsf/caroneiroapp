@@ -1,4 +1,6 @@
 import { Document, PassportLocalDocument } from 'mongoose';
+import { IPassenger } from './passenger.interface';
+
 
 export interface IUser extends PassportLocalDocument {
   readonly firstName: string;
@@ -11,4 +13,5 @@ export interface IUser extends PassportLocalDocument {
   readonly primaryPhoneNumberIsVerified?: boolean;
   readonly googleId?: string;
   readonly facebookId?: string;
+  readonly passengerId: IPassenger;
 }
