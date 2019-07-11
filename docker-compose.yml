@@ -1,19 +1,28 @@
 version: "3"
 services:
  api:
-   container_name: caroneiro-nestjs-api
-   build:
-     context: ./caroneiro-backend
-     dockerfile: Dockerfile
+   container_name: caroneiro-strapi-api
+   build: ./caroneiro-api
+   environment:
+      - APP_NAME=caroneiro-api
+      - DATABASE_CLIENT=mongo
+      - DATABASE_HOST=localhost
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=caroneirodb
+      - DATABASE_USERNAME=
+      - DATABASE_PASSWORD=
+      - DATABASE_SSL=false
+      - HOST=localhost
    volumes:
-     - ./caroneiro-backend:/api
-     - /api/node_modules
+     - ./caroneiro-api:/usr/src/api
+     - /usr/src/api/node_modules
    depends_on:
      - mongo
    ports:
-     - 3000:3000
+     - 1337:1337
    networks:
     - docker-caroneiro
+   restart: always
 
  mongo:
    container_name: mongo
