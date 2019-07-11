@@ -1,0 +1,44 @@
+{
+  "connection": "default",
+  "collectionName": "",
+  "info": {
+    "name": "trip",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "tripName": {
+      "required": true,
+      "type": "string"
+    },
+    "tripDate": {
+      "required": true,
+      "type": "date"
+    },
+    "tripCost": {
+      "type": "decimal",
+      "required": true
+    },
+    "isRecurrent": {
+      "type": "boolean"
+    },
+    "recurrenceTimes": {
+      "type": "integer"
+    },
+    "recurrenceType": {
+      "enum": [
+        "daily",
+        "weekly",
+        "monthly"
+      ],
+      "type": "enumeration"
+    },
+    "user": {
+      "model": "user",
+      "via": "trips",
+      "plugin": "users-permissions"
+    }
+  }
+}

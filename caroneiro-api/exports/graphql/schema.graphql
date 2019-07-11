@@ -6,6 +6,14 @@ type createRolePayload {
   role: UsersPermissionsRole
 }
 
+input createTripInput {
+  data: TripInput
+}
+
+type createTripPayload {
+  trip: Trip
+}
+
 input createUserInput {
   data: UserInput
 }
@@ -25,6 +33,14 @@ input deleteRoleInput {
 
 type deleteRolePayload {
   role: UsersPermissionsRole
+}
+
+input deleteTripInput {
+  where: InputID
+}
+
+type deleteTripPayload {
+  trip: Trip
 }
 
 input deleteUserInput {
@@ -56,6 +72,16 @@ input editRoleInput {
   users: [ID]
 }
 
+input editTripInput {
+  tripName: String
+  tripDate: DateTime
+  tripCost: Float
+  isRecurrent: Boolean
+  recurrenceTimes: Int
+  recurrenceType: ENUM_TRIP_RECURRENCETYPE
+  user: ID
+}
+
 input editUserInput {
   username: String
   email: String
@@ -65,6 +91,13 @@ input editUserInput {
   confirmed: Boolean
   blocked: Boolean
   role: ID
+  trips: [ID]
+}
+
+enum ENUM_TRIP_RECURRENCETYPE {
+  daily
+  weekly
+  monthly
 }
 
 input FileInput {
@@ -89,9 +122,13 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileGroupBy | UploadFileConnection_id | UploadFileConnectionId | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionHash | UploadFileConnectionSha256 | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionProvider | UploadFileConnectionPublic_id | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | Trip | createTripPayload | updateTripPayload | deleteTripPayload | TripConnection | TripAggregator | TripAggregatorSum | TripAggregatorAvg | TripAggregatorMin | TripAggregatorMax | TripGroupBy | TripConnection_id | TripConnectionId | TripConnectionCreatedAt | TripConnectionUpdatedAt | TripConnectionTripName | TripConnectionTripDate | TripConnectionTripCost | TripConnectionIsRecurrent | TripConnectionRecurrenceTimes | TripConnectionRecurrenceType | TripConnectionUser | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileGroupBy | UploadFileConnection_id | UploadFileConnectionId | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionHash | UploadFileConnectionSha256 | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionProvider | UploadFileConnectionPublic_id | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole
 
 type Mutation {
+  createTrip(input: createTripInput): createTripPayload
+  updateTrip(input: updateTripInput): updateTripPayload
+  deleteTrip(input: deleteTripInput): deleteTripPayload
+
   """Create a new role"""
   createRole(input: createRoleInput): createRolePayload
 
@@ -113,6 +150,9 @@ type Mutation {
 }
 
 type Query {
+  trip(id: ID!): Trip
+  trips(sort: String, limit: Int, start: Int, where: JSON): [Trip]
+  tripsConnection(sort: String, limit: Int, start: Int, where: JSON): TripConnection
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -136,6 +176,130 @@ input RoleInput {
   users: [ID]
 }
 
+type Trip {
+  _id: ID!
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  tripName: String!
+  tripDate: DateTime!
+  tripCost: Float!
+  isRecurrent: Boolean
+  recurrenceTimes: Int
+  recurrenceType: ENUM_TRIP_RECURRENCETYPE
+  user: UsersPermissionsUser
+}
+
+type TripAggregator {
+  count: Int
+  totalCount: Int
+  sum: TripAggregatorSum
+  avg: TripAggregatorAvg
+  min: TripAggregatorMin
+  max: TripAggregatorMax
+}
+
+type TripAggregatorAvg {
+  recurrenceTimes: Float
+}
+
+type TripAggregatorMax {
+  recurrenceTimes: Float
+}
+
+type TripAggregatorMin {
+  recurrenceTimes: Float
+}
+
+type TripAggregatorSum {
+  recurrenceTimes: Float
+}
+
+type TripConnection {
+  values: [Trip]
+  groupBy: TripGroupBy
+  aggregate: TripAggregator
+}
+
+type TripConnection_id {
+  key: ID
+  connection: TripConnection
+}
+
+type TripConnectionCreatedAt {
+  key: DateTime
+  connection: TripConnection
+}
+
+type TripConnectionId {
+  key: ID
+  connection: TripConnection
+}
+
+type TripConnectionIsRecurrent {
+  key: Boolean
+  connection: TripConnection
+}
+
+type TripConnectionRecurrenceTimes {
+  key: Int
+  connection: TripConnection
+}
+
+type TripConnectionRecurrenceType {
+  key: String
+  connection: TripConnection
+}
+
+type TripConnectionTripCost {
+  key: Float
+  connection: TripConnection
+}
+
+type TripConnectionTripDate {
+  key: DateTime
+  connection: TripConnection
+}
+
+type TripConnectionTripName {
+  key: String
+  connection: TripConnection
+}
+
+type TripConnectionUpdatedAt {
+  key: DateTime
+  connection: TripConnection
+}
+
+type TripConnectionUser {
+  key: ID
+  connection: TripConnection
+}
+
+type TripGroupBy {
+  _id: [TripConnection_id]
+  id: [TripConnectionId]
+  createdAt: [TripConnectionCreatedAt]
+  updatedAt: [TripConnectionUpdatedAt]
+  tripName: [TripConnectionTripName]
+  tripDate: [TripConnectionTripDate]
+  tripCost: [TripConnectionTripCost]
+  isRecurrent: [TripConnectionIsRecurrent]
+  recurrenceTimes: [TripConnectionRecurrenceTimes]
+  recurrenceType: [TripConnectionRecurrenceType]
+  user: [TripConnectionUser]
+}
+
+input TripInput {
+  tripName: String!
+  tripDate: DateTime!
+  tripCost: Float!
+  isRecurrent: Boolean
+  recurrenceTimes: Int
+  recurrenceType: ENUM_TRIP_RECURRENCETYPE
+  user: ID
+}
+
 input updateRoleInput {
   where: InputID
   data: editRoleInput
@@ -143,6 +307,15 @@ input updateRoleInput {
 
 type updateRolePayload {
   role: UsersPermissionsRole
+}
+
+input updateTripInput {
+  where: InputID
+  data: editTripInput
+}
+
+type updateTripPayload {
+  trip: Trip
 }
 
 input updateUserInput {
@@ -275,6 +448,7 @@ input UserInput {
   confirmed: Boolean
   blocked: Boolean
   role: ID
+  trips: [ID]
 }
 
 type UsersPermissionsMe {
@@ -369,6 +543,7 @@ type UsersPermissionsUser {
   confirmed: Boolean
   blocked: Boolean
   role: UsersPermissionsRole
+  trips(sort: String, limit: Int, start: Int, where: JSON): [Trip]
 }
 
 type UsersPermissionsUserAggregator {

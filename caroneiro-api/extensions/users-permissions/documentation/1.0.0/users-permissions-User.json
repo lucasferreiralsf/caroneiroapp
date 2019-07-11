@@ -1161,6 +1161,43 @@
                 }
               }
             }
+          },
+          "trips": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "tripName",
+                "tripDate",
+                "tripCost"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "tripName": {
+                  "type": "string"
+                },
+                "tripDate": {
+                  "type": "string"
+                },
+                "tripCost": {
+                  "type": "number"
+                },
+                "isRecurrent": {
+                  "type": "boolean"
+                },
+                "recurrenceTimes": {
+                  "type": "integer"
+                },
+                "recurrenceType": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       },
@@ -1198,6 +1235,12 @@
           },
           "role": {
             "type": "string"
+          },
+          "trips": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
