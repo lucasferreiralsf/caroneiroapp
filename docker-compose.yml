@@ -2,12 +2,10 @@ version: "3"
 services:
  api:
    container_name: caroneiro-nestjs-api
-   build:
-     context: ./caroneiro-backend
-     dockerfile: Dockerfile
+   build: ./caroneiro-api
    volumes:
-     - ./caroneiro-backend:/api
-     - /api/node_modules
+     - ./caroneiro-api:/usr/src/api
+     - /usr/src/api/node_modules
    depends_on:
      - mongo
    ports:
