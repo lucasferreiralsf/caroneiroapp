@@ -9,9 +9,12 @@ export interface IUser extends mongoose.Document {
   readonly secondaryPhoneNumber?: number;
   readonly email: string;
   password: string;
+  readonly ownerTrips?: [ObjectID];
+  readonly tripsAsPassenger?: [ObjectID];
   readonly emailIsVerified?: boolean;
   readonly primaryPhoneNumberIsVerified?: boolean;
   readonly googleId?: string;
   readonly facebookId?: string;
   readonly passengerId?: ObjectID;
+  readonly fullName?: () => string;
 }

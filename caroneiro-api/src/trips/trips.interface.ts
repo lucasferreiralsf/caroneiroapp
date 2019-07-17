@@ -12,6 +12,8 @@ export interface ITrip extends mongoose.Document {
   tripName: string;
   tripDate: Date;
   tripCost: number;
+  tripOwner: ObjectID;
+  tripPassengers: [ObjectID];
   isSharingCost?: boolean;
   isRecurrent?: boolean;
   recurrenceTimes?: number;

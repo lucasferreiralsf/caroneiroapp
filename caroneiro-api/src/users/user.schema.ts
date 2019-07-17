@@ -55,10 +55,14 @@ const UsersSchema = new mongoose.Schema(
     facebookId: {
       type: String,
     },
-    passengerId: {
+    ownerTrips: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Passengers',
-    },
+      ref: 'Trips',
+    }],
+    tripsAsPassenger: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Trips',
+    }],
   },
   { timestamps: true },
 );
@@ -73,5 +77,13 @@ UsersSchema.pre('save', async function(next) {
   user.password = await bcrypt.hash(user.password, 12);
   next();
 });
+
+UsersSchema.methods = {
+
+  fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
+  },
+
+};
 
 export { UsersSchema };

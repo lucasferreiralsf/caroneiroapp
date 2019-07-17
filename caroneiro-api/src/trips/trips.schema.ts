@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate';
 
 export const TripSchema = new mongoose.Schema(
   {
@@ -32,6 +33,26 @@ export const TripSchema = new mongoose.Schema(
       enum: ['daily', 'weekly', 'monthly'],
       default: 'daily',
     },
+    tripOwner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Users',
+      required: true,
+    },
+    tripPassengers: [
+      {
+        passenger: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Users',
+          required: true,
+        },
+        hasConfirmed: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   { timestamps: true },
 );
+
+TripSchema.plugin(mongoosePaginate);
