@@ -51,9 +51,11 @@ const UsersSchema = new mongoose.Schema(
     },
     googleId: {
       type: String,
+      unique: true,
     },
     facebookId: {
       type: String,
+      unique: true,
     },
     ownerTrips: [{
       type: mongoose.Schema.Types.ObjectId,

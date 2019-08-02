@@ -9,7 +9,34 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nest-modules/mailer';
 import { IAuth } from './auth.interface';
+import { UserModel } from 'src/users/users.model';
 
+export enum Provider {
+  GOOGLE = 'google',
+  FACEBOOK = 'facebook',
+  LOCAL = 'local',
+}
+
+export const STATUSCODE = {
+  CREATED_NOT_PHONE_NUMBER: {
+    code: 1,
+    message: 'User created but he has no phone.',
+  },
+  CREATED_EMAIL_INVALID: {
+    code: 2,
+    message: 'User created but his email is invalid.',
+  },
+};
+
+export interface IGoogleProfileJson {
+  sub: string;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+  locale: string;
+  email: string;
+}
 @Injectable()
 export class AuthService {
   constructor(
@@ -31,7 +58,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    if (this.validateUser(user)) {
+    if (this.validateEmailUser(user)) {
       const payload = {
         id: user.id,
         name: user.firstName,
@@ -41,8 +68,69 @@ export class AuthService {
       const token = this.jwtService.sign(payload);
       return { token };
     } else {
-      return {message: 'Conta não verificada, email enviado novamente.'};
+      return { message: 'Conta não verificada, email enviado novamente.' };
     }
+  }
+
+  async validateOAuthLogin(
+    profile: IGoogleProfileJson,
+    provider: Provider,
+  ): Promise<string | any> {
+    if (provider === Provider.GOOGLE) {
+      const user = await this.userService.findByEmail(profile.email);
+      if (user) {
+        if (user.primaryPhoneNumber) {
+          const payload = {
+            profile: profile.sub,
+            provider,
+          };
+
+          const jwt: string = this.jwtService.sign(payload, {
+            expiresIn: 3600,
+          });
+
+          return jwt;
+        } else {
+          return {
+            status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
+            data: user,
+          };
+        }
+      } else {
+        let use;
+        use.email = profile.email;
+        use.emailIsVerified = true;
+        use.googleId = profile.sub;
+        use.firstName = profile.given_name;
+        use.lastName = profile.family_name;
+
+        const userRegistered = await this.userService.store(use);
+        return {
+          status: 'created',
+          data: userRegistered,
+        };
+      }
+    }
+    // try {
+    //   // You can add some registration logic here,
+    //   // to register the user using their thirdPartyId (in this case their googleId)
+    //   // let user: IUser = await this.usersService.findOneByThirdPartyId(thirdPartyId, provider);
+
+    //   // if (!user)
+    //   // user = await this.usersService.registerOAuthUser(thirdPartyId, provider);
+
+    //   const payload = {
+    //     profile.sub,
+    //     provider,
+    //   };
+
+    //   const jwt: string = this.jwtService.sign(payload, {
+    //     expiresIn: 3600,
+    //   });
+    //   return jwt;
+    // } catch (err) {
+    //   throw new InternalServerErrorException('validateOAuthLogin', err.message);
+    // }
   }
 
   async register(credentials: IUser): Promise<IUser> {
@@ -57,7 +145,7 @@ export class AuthService {
     }
   }
 
-  validateUser(user: IUser): boolean {
+  validateEmailUser(user: IUser): boolean {
     if (!user.emailIsVerified) {
       this.sendEmailVerification(user);
       return false;

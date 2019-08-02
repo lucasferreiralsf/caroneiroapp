@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { IUser } from '../users/users.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IUser) {
-    const user = await this.authService.validateUser(payload);
+    const user = await this.authService.validateEmailUser(payload);
 
     if (!user) {
       throw new UnauthorizedException();
