@@ -18,9 +18,13 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - './data/mongodb/db:/data/db'
+      - 'mongodb_data:/data/db'
     networks:
       - docker-caroneiro
 networks:
   docker-caroneiro:
     driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
