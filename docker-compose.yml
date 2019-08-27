@@ -4,8 +4,8 @@ services:
     container_name: caroneiro-nestjs-api
     build: ./caroneiro-api
     volumes:
-      - './caroneiro-api:/usr/src/api'
-      - /usr/src/api/node_modules
+      - './caroneiro-api:/caroneiro/api'
+      - /caroneiro/api/node_modules
     depends_on:
       - mongo
     ports:

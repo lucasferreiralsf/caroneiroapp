@@ -1,6 +1,8 @@
 FROM node:12
-WORKDIR /usr/src/api
+WORKDIR /caroneiro/api
+COPY package.json package.json
+# RUN npm install -g @nestjs/cli
+RUN npm install
 COPY . .
-RUN npm install -g @nestjs/cli && npm install
 EXPOSE 3000
 CMD [ "npm", "run", "start:dev" ]

@@ -3,7 +3,7 @@ export const enviroment = {
     secretOrPrivateKey: process.env.SECRET || 'L2c@s2346&5%4jsdhu*!9',
     googleClientId:
       process.env.GOOGLE_CLIENT_ID ||
-      '1019138703782-dimucajek22fs0q4kf1uhahh1iurlqu1.apps.googleusercontent.com',
-    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || 'KqdVUmTxHY32S21hzhS5yqO9',
+      '255898393899-sk17d4qlo1m146prsjkip62ot0thload.apps.googleusercontent.com',
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || 'fZrfhNJ9k3mWJM49mh_rF01E',
   },
 };

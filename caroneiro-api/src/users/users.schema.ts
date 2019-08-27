@@ -9,7 +9,7 @@ interface IUser extends mongoose.Document {
   primaryPhoneNumber: number;
   secondaryPhoneNumber?: number;
   email: string;
-  password: string;
+  password?: string;
   ownerTrips?: [ObjectID];
   tripsAsPassenger?: [ObjectID];
   emailIsVerified?: boolean;
@@ -27,7 +27,7 @@ class UserModel extends mongoose.Model {
   primaryPhoneNumber: number;
   secondaryPhoneNumber?: number;
   email: string;
-  password: string;
+  password?: string;
   ownerTrips?: [ObjectID];
   tripsAsPassenger?: [ObjectID];
   emailIsVerified?: boolean;
@@ -55,7 +55,6 @@ const UsersSchema = new mongoose.Schema(
     },
     primaryPhoneNumber: {
       type: Number,
-      required: true,
       trim: true,
     },
     secondaryPhoneNumber: {
@@ -73,7 +72,6 @@ const UsersSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       trim: true,
       select: false,
     },

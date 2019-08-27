@@ -90,11 +90,11 @@ export class AuthService {
             provider,
           };
 
-          const jwt: string = this.jwtService.sign(payload, {
+          const token: string = this.jwtService.sign(payload, {
             expiresIn: 3600,
           });
 
-          return { jwt };
+          return { token };
         } else {
           return {
             status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
@@ -111,7 +111,7 @@ export class AuthService {
 
         const userRegistered = await this.userService.store(use);
         return {
-          status: 'created',
+          status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
           data: userRegistered,
         };
       }

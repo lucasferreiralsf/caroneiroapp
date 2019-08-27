@@ -7,7 +7,7 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService, IAuth } from './auth.service';
 import { IUser } from '../users/users.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
@@ -17,7 +17,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() payload: IUser) {
+  async login(@Body() payload: IAuth) {
     return await this.authService.login(payload);
   }
 
@@ -36,11 +36,15 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleLoginCallback(@Req() req, @Res() res: Response) {
     // handles the Google OAuth2 callback
-    const jwt: string = req.user.jwt;
-    if (jwt) {
-      res.redirect('http://localhost:4200/login/success/' + jwt);
+    const token: string = req.user.token;
+    if (token) {
+      res.status(200).json(token);
     } else {
-      res.redirect('http://localhost:4200/login/failure');
+      res.status(403).json({
+        code: req.user.status.code,
+        message: req.user.status.message,
+        data: req.user.data,
+      });
     }
   }
 }
