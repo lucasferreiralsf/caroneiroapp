@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     MailerModule.forRoot({
       transport:
-        'smtp://lucasferreiralsf@hotmail.com:Santos09021992@smtp.office365.com',
+        'smtp://no-reply@caroneiroapp.com.br:Car069471@smtp.umbler.com',
       defaults: {
         from: '"CaroneiroAPP" <no-replay@caroneiroapp.com.br>',
       },
