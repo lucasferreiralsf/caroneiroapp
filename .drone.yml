@@ -1,15 +1,20 @@
 kind: pipeline
+type: docker
 name: default
 
+platform:
+  os: linux
+  arch: arm64
+
 steps:
-- name: build
-  image: docker/compose
-  volumes:
-  - name: docker_sock
-    path: /var/run/docker.sock
+- name: backend
+  image: node:12
   commands:
-  - up -f docker-compose.yaml
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
+  - cd caroneiro-api
+  - npm install
+  - npm run build
+  - npm run start:prod
+
+trigger:
+  branch:
+  - NestJS-V2
