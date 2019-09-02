@@ -1,16 +1,16 @@
 kind: pipeline
-type: ssh
+type: docker
 name: default
 
 platform:
   os: linux
   arch: amd64
 
-server:
-  host: caroneiroapp.com.br
-  user: root
-  password:
-    from_secret: password
+# server:
+#   host: caroneiroapp.com.br
+#   user: root
+#   password:
+#     from_secret: password
 # workspace:
 #   base: /go
 #   path: src/github.com/caroneiroapp/app
@@ -34,9 +34,9 @@ steps:
 
 - name: deploy
   # image: docker/compose:1.25.0-rc2
-  # volumes:
-  #   - name: docker_sock
-  #     path: /var/run/docker.sock
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
     # - name: dockersock
     #   path: /var/run
   commands:
@@ -50,10 +50,10 @@ steps:
 #   - name: dockersock
 #     path: /var/run
 
-# volumes:
-#   - name: docker_sock
-#     host:
-#       path: /var/run/docker.sock
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
   # - name: dockersock
   #   temp: {}
 
