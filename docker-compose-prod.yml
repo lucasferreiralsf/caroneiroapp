@@ -1,7 +1,7 @@
 version: '3'
 services:
-  caroneiro-api:
-    container_name: caroneiro-api
+  caroneiro_api:
+    container_name: caroneiro_api
     build: 
       context: ./caroneiro-api
       dockerfile: Dockerfile-production

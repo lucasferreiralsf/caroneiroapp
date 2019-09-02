@@ -1,6 +1,6 @@
 version: '3'
 services:
-  api:
+  caroneiro_api:
     container_name: caroneiro-nestjs-api
     build: ./caroneiro-api
     volumes:
