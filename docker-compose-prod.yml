@@ -8,8 +8,8 @@ services:
     volumes:
       - './caroneiro-api:/caroneiro/api'
       - /caroneiro/api/node_modules
-    depends_on:
-      - mongo
+    # depends_on:
+    #  - mongo
     ports:
       - '3000:3000'
     labels:
