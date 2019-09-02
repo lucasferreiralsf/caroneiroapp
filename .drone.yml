@@ -35,7 +35,7 @@ steps:
     # - name: dockersock
     #   path: /var/run
   commands:
-    - -f docker-compose-prod.yml up --force-recreate -d
+    - up -f docker-compose-prod.yml --force-recreate -d
 
 # services:
 # - name: docker
