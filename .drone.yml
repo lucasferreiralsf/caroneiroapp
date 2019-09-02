@@ -28,7 +28,7 @@ steps:
 #       path: /var/run/docker.sock
 
 - name: deploy
-  image: docker:compose
+  image: compose
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
