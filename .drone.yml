@@ -28,7 +28,7 @@ steps:
   image: docker:dind
   commands:
     # - sleep 5
-    - docker build --file="caroneiro-api/Dockerfile-production" -t lucasferreira/caroneiroapi:latest
+    - docker build --file="caroneiro-api/Dockerfile-production" -t lucasferreira/caroneiroapi:latest .
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
