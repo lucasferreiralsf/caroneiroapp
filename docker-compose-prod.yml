@@ -14,9 +14,7 @@ services:
       - '3000:3000'
     labels:
       - "traefik.backend=api-caroneiroapp"
-      - "traefik.docker.network=web"
       - "traefik.frontend.rule=Host:api.caroneiroapp.com.br"
-      - "traefik.enable=true"
       - "traefik.port=3000"
     networks:
       - web
