@@ -8,12 +8,12 @@ platform:
 
 steps:
 - name: backend
-  image: compose
+  image: compose:1.25.0-rc2
   volumes:
   - name: docker_sock
     path: /var/run/docker.sock
   commands:
-  - up -f docker-compose-prod.yaml -d caroneiro-api --force-recreate
+  - up -f docker-compose-prod.yml -d caroneiro-api --force-recreate
 
 
 volumes:
