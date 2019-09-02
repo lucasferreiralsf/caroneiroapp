@@ -29,9 +29,9 @@ steps:
 
 - name: deploy
   # image: docker/compose:1.25.0-rc2
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
+  # volumes:
+  #   - name: docker_sock
+  #     path: /var/run/docker.sock
     # - name: dockersock
     #   path: /var/run
   commands:
@@ -45,10 +45,10 @@ steps:
 #   - name: dockersock
 #     path: /var/run
 
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
+# volumes:
+#   - name: docker_sock
+#     host:
+#       path: /var/run/docker.sock
   # - name: dockersock
   #   temp: {}
 
