@@ -1,10 +1,10 @@
 kind: pipeline
-# type: docker
+type: docker
 name: default
 
 platform:
   os: linux
-  arch: arm64
+  arch: amd64
 
 # workspace:
 #   base: /go
@@ -35,7 +35,6 @@ steps:
     # - name: dockersock
     #   path: /var/run
   commands:
-    - sleep 5
     - docker compose -f docker-compose-prod.yml up --force-recreate -d
 
 # services:
