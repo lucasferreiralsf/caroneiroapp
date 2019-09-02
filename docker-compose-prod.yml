@@ -1,0 +1,23 @@
+version: '3'
+services:
+  caroneiro-api:
+    container_name: caroneiro-api
+    build: 
+      context: ./caroneiro-api
+      dockerfile: Dockerfile-production
+    volumes:
+      - './caroneiro-api:/caroneiro/api'
+      - /caroneiro/api/node_modules
+    depends_on:
+      - mongo
+    ports:
+      - '3000:3000'
+    labels:
+      - "traefik.backend=api-caroneiroapp"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:api.caroneiroapp.com.br"
+      - "traefik.enable=true"
+      - "traefik.port=3000"
+    networks:
+      - web
+      - docker-caroneiro

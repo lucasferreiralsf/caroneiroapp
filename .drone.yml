@@ -8,12 +8,18 @@ platform:
 
 steps:
 - name: backend
-  image: node:12
+  image: docker/compose
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
   commands:
-  - cd caroneiro-api
-  - npm install
-  - npm run build
-  - npm run start:prod
+  - up -f docker-compose-prod.yaml -d caroneiro-api --force-recreate
+
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
 
 trigger:
   branch:
