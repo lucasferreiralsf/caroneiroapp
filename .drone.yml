@@ -27,20 +27,20 @@ steps:
 - name: build
   image: docker:dind
   commands:
-    - docker build -f \"caroneiro-api/Dockerfile-production\" -t lucasferreira/caroneiroapi:latest
+    - docker build -f ./caroneiro-api/Dockerfile-production -t lucasferreira/caroneiroapi:latest
   volumes:
-    # - name: docker_sock
-    #   path: /var/run/docker.sock
-    - name: dockersock
-      path: /var/run
+    - name: docker_sock
+      path: /var/run/docker.sock
+    # - name: dockersock
+    #   path: /var/run
 
 - name: deploy
   image: docker:dind
   volumes:
-    # - name: docker_sock
-    #   path: /var/run/docker.sock
-    - name: dockersock
-      path: /var/run
+    - name: docker_sock
+      path: /var/run/docker.sock
+    # - name: dockersock
+    #   path: /var/run
   commands:
     - docker run lucasferreira/caroneiroapi:latest --name caroneiro_api
 
@@ -49,15 +49,17 @@ services:
   image: docker:dind
   privileged: true
   volumes:
-  - name: dockersock
-    path: /var/run
+  # - name: dockersock
+  #   path: /var/run
+  - name: docker_sock
+    path: /var/run/docker.sock
 
 volumes:
   - name: docker_sock
     host:
       path: /var/run/docker.sock
-  - name: dockersock
-    temp: {}
+  # - name: dockersock
+  #   temp: {}
 
 trigger:
   branch:
