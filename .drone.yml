@@ -6,9 +6,9 @@ name: default
 #   os: linux
 #   arch: arm64
 
-workspace:
-  base: /go
-  path: src/github.com/caroneiroapp/app
+# workspace:
+#   base: /go
+#   path: src/github.com/caroneiroapp/app
 
 steps:
 # - name: backend
