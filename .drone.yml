@@ -13,7 +13,7 @@ steps:
   - name: docker_sock
     path: /var/run/docker.sock
   commands:
-  - docker-compose up --force-recreate -f /drone/src/docker-compose-prod.yml -d caroneiro-api
+  - docker-compose -f /drone/src/docker-compose-prod.yml up --force-recreate -d caroneiro_api
 
 
 volumes:
