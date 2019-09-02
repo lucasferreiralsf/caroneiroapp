@@ -27,7 +27,7 @@ steps:
 - name: build
   image: docker:dind
   commands:
-    - docker build -f caroneiro-api/Dockerfile-production -t lucasferreira/caroneiroapi:latest
+    - docker build -f \"caroneiro-api/Dockerfile-production\" -t lucasferreira/caroneiroapi:latest
   volumes:
     # - name: docker_sock
     #   path: /var/run/docker.sock
