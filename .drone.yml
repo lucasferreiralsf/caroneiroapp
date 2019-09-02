@@ -15,22 +15,25 @@ steps:
 #   commands:
 #     - docker-compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
 
-- name: build
-  image: docker
-  commands:
-    - docker build -t some/container .
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
+# - name: build
+#   image: docker
+#   commands:
+#     - docker build -t some/container .
+#   volumes:
+#     - name: docker_sock
+#       path: /var/run/docker.sock
 
 - name: deploy
-  image: docker/compose
+  image: docker
   commands:
     - docker compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
 
+services:
+- name: docker:dind
+  image: docker
 
 volumes:
   - name: docker_sock
