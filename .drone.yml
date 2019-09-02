@@ -7,13 +7,29 @@ platform:
   arch: arm64
 
 steps:
-- name: backend
-  image: docker/compose
-  volumes:
-  - name: docker_sock
-    path: /var/run/docker.sock
+# - name: backend
+#   image: docker/compose
+#   volumes:
+#   - name: docker_sock
+#     path: /var/run/docker.sock
+#   commands:
+#     - docker-compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
+
+- name: build
+  image: docker
   commands:
-  - docker-compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
+    - docker build -t some/container .
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+
+- name: deploy
+  image: docker/compose
+  commands:
+    - docker compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
 
 
 volumes:
@@ -23,4 +39,4 @@ volumes:
 
 trigger:
   branch:
-  - NestJS-V2
+    - NestJS-V2
