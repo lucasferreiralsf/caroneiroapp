@@ -8,7 +8,7 @@ platform:
 
 steps:
 - name: backend
-  image: docker/compose
+  image: compose
   volumes:
   - name: docker_sock
     path: /var/run/docker.sock
