@@ -28,14 +28,14 @@ steps:
 #       path: /var/run/docker.sock
 
 - name: deploy
-  image: compose:1.25.0-rc2
+  image: docker/compose:1.25.0-rc2
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
     # - name: dockersock
     #   path: /var/run
   commands:
-    - up -f docker-compose-prod.yml --force-recreate -d
+    - docker-compose -f docker-compose-prod.yml up --force-recreate -d
 
 # services:
 # - name: docker
