@@ -24,38 +24,40 @@ steps:
 #   commands:
 #     - docker-compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
 
-# - name: build
-#   image: docker
-#   commands:
-#     - docker build -t some/container .
-#   volumes:
-#     - name: docker_sock
-#       path: /var/run/docker.sock
+- name: build
+  image: docker:dind
+  commands:
+    - docker build -f /caroneiro-api/Dockerfile-production -t lucasferreira/caroneiroapi:latest
+  volumes:
+    # - name: docker_sock
+    #   path: /var/run/docker.sock
+    - name: dockersock
+      path: /var/run
 
 - name: deploy
-  image: docker/compose:1.25.0-rc2
+  image: docker:dind
   volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
-    # - name: dockersock
-    #   path: /var/run
+    # - name: docker_sock
+    #   path: /var/run/docker.sock
+    - name: dockersock
+      path: /var/run
   commands:
-    - docker-compose -f docker-compose-prod.yml up --force-recreate -d
+    - docker run lucasferreira/caroneiroapi:latest --name caroneiro_api
 
-# services:
-# - name: docker
-#   image: docker:dind
-#   privileged: true
-#   volumes:
-#   - name: dockersock
-#     path: /var/run
+services:
+- name: docker
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: dockersock
+    path: /var/run
 
 volumes:
   - name: docker_sock
     host:
       path: /var/run/docker.sock
-  # - name: dockersock
-  #   temp: {}
+  - name: dockersock
+    temp: {}
 
 trigger:
   branch:
