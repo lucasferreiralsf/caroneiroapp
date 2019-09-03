@@ -9,19 +9,18 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { ConfigModule } from 'src/config/config.module';
 import { ConfigService } from 'src/config/config.service';
 
+const configService = new ConfigService(
+  `enviroments/${process.env.NODE_ENV || 'default'}.env`,
+);
 @Module({
   imports: [
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
-        secretOrPrivateKey: config.get('SECRET_OR_PRIVATE_KEY'),
-        signOptions: {
-          expiresIn: 3600,
-        },
-      }),
-      inject: [ConfigService],
+    JwtModule.register({
+      secretOrPrivateKey: configService.get('SECRET_OR_PRIVATE_KEY'),
+      signOptions: {
+        expiresIn: 3600,
+      },
     }),
     UsersModule,
   ],
