@@ -35,6 +35,16 @@ steps:
     # - name: dockersock
     #   path: /var/run
 
+- name: build
+  image: docker:dind
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+    # - name: dockersock
+    #   path: /var/run
+  commands:
+    - docker build --file="caroneiro-api/Dockerfile-production" -t lucasferreira/caroneiroapp_api:latest .
+
 - name: deploy
   image: docker/compose:1.25.0-rc2
   volumes:
@@ -48,6 +58,15 @@ steps:
 services:
 - name: docker
   image: docker/compose:1.25.0-rc2
+  privileged: true
+  volumes:
+  # - name: dockersock
+  #   path: /var/run
+  - name: docker_sock
+    path: /var/run/docker.sock
+
+- name: dockerdind
+  image: docker:dind
   privileged: true
   volumes:
   # - name: dockersock
