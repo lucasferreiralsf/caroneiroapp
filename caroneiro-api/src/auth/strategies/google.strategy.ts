@@ -1,0 +1,54 @@
+import { Injectable } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-google-oauth20';
+import { Provider, AuthService } from '../auth.service';
+import { ConfigService } from 'src/config/config.service';
+
+@Injectable()
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+  constructor(private authService: AuthService, private readonly config: ConfigService) {
+    super({
+      clientID: config.get('GOOGLE_CLIENT_ID'),
+      clientSecret: config.get('GOOGLE_CLIENT_SECRET'),
+      callbackURL: `${config.get('HOST_API')}/auth/google/callback`,
+      personFields: [
+        'addresses',
+        'birthdays',
+        'phoneNumbers',
+        'names',
+        'photos',
+      ],
+      passReqToCallback: true,
+      scope: [
+        'profile',
+        'https://www.googleapis.com/auth/user.birthday.read',
+        'https://www.googleapis.com/auth/user.phonenumbers.read',
+        'https://www.googleapis.com/auth/user.addresses.read',
+        'email',
+      ],
+    });
+  }
+
+  async validate(
+    request: any,
+    accessToken: string,
+    refreshToken: string,
+    profile,
+    done: Function,
+  ) {
+    try {
+      console.log(profile);
+      // console.log('REQ: ', request);
+
+      const user: {} = await this.authService.validateOAuthLogin(
+        profile._json,
+        Provider.GOOGLE,
+      );
+
+      done(null, user);
+    } catch (err) {
+      // console.log(err)
+      done(err, false);
+    }
+  }
+}

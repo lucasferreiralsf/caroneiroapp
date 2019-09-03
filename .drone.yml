@@ -1,0 +1,101 @@
+---
+kind: pipeline
+type: docker
+name: developer
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+
+- name: build
+  image: docker:dind
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+  commands:
+    - docker build --file="caroneiro-api/Dockerfile.prod" -t lucasferreira/caroneiroapp_api_dev:latest .
+
+- name: deploy
+  image: docker/compose:1.25.0-rc2
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+  commands:
+    - docker-compose -f docker-compose.dev.yml up --force-recreate -d
+
+services:
+- name: docker
+  image: docker/compose:1.25.0-rc2
+  privileged: true
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+
+- name: dockerdind
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - dev
+
+---
+kind: pipeline
+type: docker
+name: production
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+
+- name: build
+  image: docker:dind
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+  commands:
+    - docker build --file="caroneiro-api/Dockerfile.prod" -t lucasferreira/caroneiroapp_api:latest .
+
+- name: deploy
+  image: docker/compose:1.25.0-rc2
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+  commands:
+    - docker-compose -f docker-compose.prod.yml up --force-recreate -d
+
+services:
+- name: docker
+  image: docker/compose:1.25.0-rc2
+  privileged: true
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+
+- name: dockerdind
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - master
