@@ -8,8 +8,8 @@ services:
     volumes:
       - './caroneiro-api:/caroneiro/api'
       - /caroneiro/api/node_modules
-    # depends_on:
-    #  - mongo
+    depends_on:
+     - mongo
     ports:
       - '7000:3000'
     labels:
@@ -20,8 +20,22 @@ services:
       - web
       - docker-caroneiro
 
+  mongo:
+    container_name: mongo
+    image: 'mongo:latest'
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'mongodb_data:/data/db'
+    networks:
+      - docker-caroneiro
+
 networks:
   web:
     external: true
   docker-caroneiro:
-    external: false 
+    external: false
+
+volumes:
+  mongodb_data:
+    driver: local

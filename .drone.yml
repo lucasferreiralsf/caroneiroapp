@@ -24,30 +24,30 @@ steps:
 #   commands:
 #     - docker-compose -f docker-compose-prod.yml up --force-recreate -d caroneiro_api
 
-- name: build
-  image: docker:dind
-  commands:
-    # - sleep 5
-    - docker build --file="caroneiro-api/Dockerfile-production" -t lucasferreira/caroneiroapi:latest .
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
+# - name: build
+#   image: docker:dind
+#   commands:
+#     # - sleep 5
+#     - docker build --file="caroneiro-api/Dockerfile-production" -t lucasferreira/caroneiroapi:latest .
+#   volumes:
+#     - name: docker_sock
+#       path: /var/run/docker.sock
     # - name: dockersock
     #   path: /var/run
 
 - name: deploy
-  image: docker:dind
+  image: docker/compose
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
     # - name: dockersock
     #   path: /var/run
   commands:
-    - docker run lucasferreira/caroneiroapi:latest --name caroneiro_api
+    - docker-compose -f docker-compose-prod.yml up --build --force-recreate -d
 
 services:
 - name: docker
-  image: docker:dind
+  image: docker/compose
   privileged: true
   volumes:
   # - name: dockersock
