@@ -3,7 +3,7 @@ services:
   caroneiro_api:
     container_name: caroneiro_api
     image: lucasferreira/caroneiroapp_api:latest
-    environments:
+    environment:
       - NODE_ENV=prod
     volumes:
       - './caroneiro-api:/caroneiro/api'
