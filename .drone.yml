@@ -36,7 +36,7 @@ steps:
     #   path: /var/run
 
 - name: deploy
-  image: docker/compose
+  image: docker/compose:1.25.0-rc2
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
@@ -47,7 +47,7 @@ steps:
 
 services:
 - name: docker
-  image: docker/compose
+  image: docker/compose:1.25.0-rc2
   privileged: true
   volumes:
   # - name: dockersock
