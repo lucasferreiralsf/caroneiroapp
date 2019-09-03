@@ -1,0 +1,25 @@
+version: '3'
+services:
+  caroneiro_api_dev:
+    container_name: caroneiro_api_dev
+    image: lucasferreira/caroneiroapp_api_dev:latest
+    volumes:
+      - './caroneiro-api:/caroneiro/api_dev'
+      - /caroneiro/api_dev/node_modules
+    depends_on:
+     - mongo
+    ports:
+      - '7500:7000'
+    labels:
+      - "traefik.backend=caroneiroapp-dev"
+      - "traefik.frontend.rule=Host:devapi.caroneiroapp.com.br"
+      - traefik.port=7000
+    networks:
+      - web
+      - docker_caroneiro_dev
+
+networks:
+  web:
+    external: true
+  docker_caroneiro_dev:
+    external: false

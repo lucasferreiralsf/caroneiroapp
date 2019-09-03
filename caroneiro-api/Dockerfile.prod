@@ -1,7 +1,4 @@
 FROM node:12
-# LABEL traefik.backend="api-caroneiroapp"
-# LABEL traefik.frontend.rule="Host:api.cluster.caroneiroapp.com.br"
-# LABEL traefik.port="7000"
 #WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json package.json
 # RUN npm install -g @nestjs/cli

@@ -169,7 +169,7 @@ export class AuthService {
     const token = this.jwtService.sign(payload, { expiresIn: '2h' });
     this.mailerService.sendMail({
       to: user.email, // sender address
-      from: 'lucasferreiralsf@hotmail.com', // list of receivers
+      from: 'no-reply@caroneiroapp.com.br', // list of receivers
       subject: 'Account Confirmation ✔', // Subject line
       template: 'account-confirm',
       // html: `<h1>Bem vindo, seu token é: ${token}</h1>`,

@@ -1,21 +1,46 @@
 version: '3'
 services:
-  caroneiro_api:
-    container_name: caroneiro-nestjs-api
-    build: ./caroneiro-api
+  caroneiro_api_dev:
+    container_name: caroneiro_api_dev
+    # image: lucasferreira/caroneiroapp_api_dev:latest
     volumes:
-      - './caroneiro-api:/caroneiro/api'
-      - /caroneiro/api/node_modules
+      - './caroneiro-api:/caroneiro/api_dev'
+      - /caroneiro/api_dev/node_modules
     depends_on:
-      - mongo
+     - mongo
     ports:
-      - '3000:3000'
+      - '7500:7000'
     labels:
-      - "traefik.backend=api-caroneiroapp"
-      - "traefik.docker.network=web"
-      - "traefik.frontend.rule=Host:api.caroneiroapp.com.br"
-      - "traefik.enable=true"
-      - "traefik.port=3000"
+      - "traefik.backend=caroneiroapp-dev"
+      - "traefik.frontend.rule=Host:devapi.caroneiroapp.com.br"
+      - traefik.port=7000
     networks:
       - web
-      - docker-caroneiro
+      - docker_caroneiro_dev
+  
+  mongo:
+    image: 'mongo:latest'
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER_ROOT}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_USER_ROOT_PASS}
+    volumes:
+      - './data/mongodb/db:/data/db'
+    depends_on:
+      - reverse_proxy
+    labels:
+      - traefik.enable=true
+      - "traefik.frontend.protocol=https"
+      - "traefik.frontend.rule=Host:mongo.cluster.caroneiroapp.com.br"
+      - "traefik.port=27017"
+    networks:
+      - web
+      - docker_caroneiro_dev
+
+networks:
+  web:
+    external: true
+  docker_caroneiro_dev:
+    external: false

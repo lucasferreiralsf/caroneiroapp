@@ -12,7 +12,7 @@ services:
     depends_on:
      - mongo
     ports:
-      - '7000:3000'
+      - '7000:7000'
     labels:
       - "traefik.backend=api-caroneiroapp"
       - "traefik.frontend.rule=Host:api.caroneiroapp.com.br"
@@ -21,22 +21,8 @@ services:
       - web
       - docker-caroneiro
 
-  mongo:
-    container_name: mongo
-    image: 'mongo:latest'
-    ports:
-      - '27017:27017'
-    volumes:
-      - 'mongodb_data:/data/db'
-    networks:
-      - docker-caroneiro
-
 networks:
   web:
     external: true
   docker-caroneiro:
     external: false
-
-volumes:
-  mongodb_data:
-    driver: local

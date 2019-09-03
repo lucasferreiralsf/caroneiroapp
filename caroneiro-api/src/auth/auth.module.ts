@@ -6,16 +6,21 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
-import { enviroment } from '../common/enviroment';
+import { ConfigModule } from 'src/config/config.module';
+import { ConfigService } from 'src/config/config.service';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secretOrPrivateKey: enviroment.security.secretOrPrivateKey,
-      signOptions: {
-        expiresIn: 3600,
-      },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        secretOrPrivateKey: config.get('SECRET_OR_PRIVATE_KEY'),
+        signOptions: {
+          expiresIn: 3600,
+        },
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
   ],
