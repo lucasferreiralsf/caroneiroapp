@@ -6,8 +6,6 @@ services:
     volumes:
       - './caroneiro-api:/caroneiro/api_dev'
       - /caroneiro/api_dev/node_modules
-    depends_on:
-     - mongo
     ports:
       - '7500:7000'
     labels:
