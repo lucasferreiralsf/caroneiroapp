@@ -26,7 +26,10 @@ const ENV = process.env.NODE_ENV;
     }),
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) =>
-        configService.get('database'),
+        ({
+          uri: configService.get('database.uri'),
+          options: configService.get('database.options'),
+        }),
       inject: [ConfigService],
     }),
     MailerModule.forRootAsync({

@@ -23,7 +23,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:
-      - '/mongodb_data:/data/db'
+      - './mongodb_data:/data/db'
       - './initMongoLocal/:/docker-entrypoint-initdb.d/'
     networks:
       - web
