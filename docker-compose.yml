@@ -18,11 +18,13 @@ services:
     container_name: mongo
     ports:
       - '27017:27017'
+    restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: 'root'
-      MONGO_INITDB_ROOT_PASSWORD: 'Santos09021992'
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:
-      - './data/mongodb/db:/data/db'
+      - '/mongodb_data:/data/db'
+      - './initMongoLocal/:/docker-entrypoint-initdb.d/'
     networks:
       - web
 

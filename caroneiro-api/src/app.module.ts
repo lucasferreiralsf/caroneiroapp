@@ -18,10 +18,15 @@ const ENV = process.env.NODE_ENV;
       //   'environments',
       //   !ENV ? '.env' : `.env.${ENV}`,
       // ),
-      path: path.resolve(process.cwd(), 'environments', !ENV ? '.env' : `.env.${ENV}`)
+      path: path.resolve(
+        process.cwd(),
+        'environments',
+        !ENV ? '.env' : `${ENV}.env`,
+      ),
     }),
     MongooseModule.forRootAsync({
-      useFactory: (configService: ConfigService) => configService.get('database'),
+      useFactory: (configService: ConfigService) =>
+        configService.get('database'),
       inject: [ConfigService],
     }),
     MailerModule.forRootAsync({
