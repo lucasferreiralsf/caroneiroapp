@@ -6,26 +6,34 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
-import { ConfigModule } from 'src/config/config.module';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigModule, ConfigService } from 'nestjs-config';
 
-const configService = new ConfigService(
-  `enviroments/${process.env.NODE_ENV || 'default'}.env`,
-);
 @Module({
   imports: [
-    ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secretOrPrivateKey: configService.get('SECRET_OR_PRIVATE_KEY'),
-      signOptions: {
-        expiresIn: 3600,
-      },
+    // JwtModule.register({
+    //   secretOrPrivateKey: configService.get('SECRET_OR_PRIVATE_KEY'),
+    //   signOptions: {
+    //     expiresIn: 3600,
+    //   },
+    // }),
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService) => ({
+        secretOrPrivateKey: configService.get('nestjs.SECRET_OR_PRIVATE_KEY'),
+        signOptions: {
+          expiresIn: 3600,
+        },
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    GoogleStrategy,
+  ],
   exports: [PassportModule, AuthService],
 })
 export class AuthModule {}
