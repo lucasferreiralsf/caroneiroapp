@@ -3,9 +3,8 @@ services:
   caroneiro_api:
     container_name: caroneiro_api
     image: lucasferreira/caroneiroapp_api:latest
-    # build: 
-    #   context: ./caroneiro-api
-    #   dockerfile: Dockerfile-production
+    environment:
+      - NODE_ENV=prod
     volumes:
       - './caroneiro-api:/caroneiro/api'
       - /caroneiro/api/node_modules
