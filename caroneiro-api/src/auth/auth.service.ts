@@ -2,6 +2,8 @@ import {
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import * as mongoose from 'mongoose';
 import { MailerService } from '@nest-modules/mailer';
@@ -9,6 +11,7 @@ import { UsersService } from '../users/users.service';
 import { IUser, UserModel } from '../users/users.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CUSTOM_ERROR_CODES } from '../config/custom-error-codes.config';
 
 export interface IAuth extends mongoose.Document {
   readonly email: string;
@@ -145,6 +148,64 @@ export class AuthService {
         this.sendEmailVerification(userCreated);
       }
       return userCreated;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async validateEmailToken(token: string) {
+    try {
+      const userByToken: any = this.jwtService.verify(token);
+      const user = await this.userService.findByEmail(userByToken.email);
+      if (user) {
+        user.emailIsVerified = true;
+        return await this.userService.update(user);
+      } else {
+        throw new InternalServerErrorException(
+          'Erro interno, não foi possível validar seu email. Tente novamente.',
+        );
+      }
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        const user = await this.userService.findByEmail((this.jwtService.decode(token) as any).email);
+        this.sendEmailVerification(user);
+        throw new HttpException(
+          {
+            status: HttpStatus.FORBIDDEN,
+            ...CUSTOM_ERROR_CODES.JWT_INVALID,
+          },
+          403,
+        );
+      } else {
+        throw new HttpException(
+          {
+            error,
+          },
+          403,
+        );
+      }
+    }
+  }
+
+  async validatePhoneToken(token) {
+    try {
+      const userByToken: any = this.jwtService.decode(token.toString());
+      if (userByToken.email) {
+        const user = await this.userService.findByEmail(userByToken.email);
+        if (user) {
+          user.emailIsVerified = true;
+          return await this.userService.update(user);
+        } else {
+          throw new InternalServerErrorException(
+            'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
+          );
+        }
+      } else {
+        this.sendEmailVerification(userByToken);
+        throw new InternalServerErrorException(
+          'Token inválido, foi enviado um novo token.',
+        );
+      }
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

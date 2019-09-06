@@ -19,6 +19,20 @@ export class UsersService {
     }
   }
 
+  async update(user: IUser): Promise<IUser> {
+    try {
+      const userUpdated = await this.userSchema.findOneAndUpdate(
+        { email: user.email },
+        user,
+        { new: true },
+      );
+      userUpdated.password = undefined;
+      return userUpdated;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
   async findByEmail(email: string): Promise<IUser> {
     try {
       return await this.userSchema.findOne({ email }).select('+password');

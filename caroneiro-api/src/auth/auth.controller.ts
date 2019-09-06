@@ -6,6 +6,7 @@ import {
   UseGuards,
   Req,
   Res,
+  Param,
 } from '@nestjs/common';
 import { AuthService, IAuth } from './auth.service';
 import { IUser } from '../users/users.schema';
@@ -24,6 +25,16 @@ export class AuthController {
   @Post('register')
   async register(@Body() payload: IUser) {
     return await this.authService.register(payload);
+  }
+
+  @Get('validate/email/:emailToken')
+  async validateEmailToken(@Param('emailToken') emailToken: string) {
+    return await this.authService.validateEmailToken(emailToken);
+  }
+
+  @Get('validate/phone/:phoneToken')
+  async validatePhoneToken(@Param() phoneToken: string) {
+    return await this.authService.validatePhoneToken(phoneToken);
   }
 
   @Get('google')
