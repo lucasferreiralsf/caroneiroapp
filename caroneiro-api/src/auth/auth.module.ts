@@ -24,7 +24,7 @@ import { ConfigModule } from '../config/config.module';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: await configService.getFile2('nestjs').default.SECRET_OR_PRIVATE_KEY,
+        secret: configService.get('SECRET_OR_PRIVATE_KEY'),
         signOptions: {
           expiresIn: 3600,
         },

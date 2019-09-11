@@ -16,11 +16,7 @@ export class ConfigService {
     return this.envConfig[key];
   }
 
-  getFile(fileName: string) {
-    return import(`../config/${fileName}.config`);
-  }
-
-  async getFile2(fileName: string) {
+  async getFile(fileName: string): Promise<any> {
     const file = await import(path.resolve(__dirname, '..', `config/${fileName}.config`));
     return file.default;
   }

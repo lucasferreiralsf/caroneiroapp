@@ -44,7 +44,7 @@ const ENV = process.env.NODE_ENV;
     }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => configService.getFile2('mailer'),
+      useFactory: async (configService: ConfigService) => await configService.getFile('mailer'),
       inject: [ConfigService],
     }),
     // MailerModule.forRootAsync({
