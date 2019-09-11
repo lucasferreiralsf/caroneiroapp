@@ -1,7 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { User, UserCreateInput, UserUpdateInput, Prisma } from '../prisma/prisma-client';
+import {
+  User,
+  UserCreateInput,
+  UserUpdateInput,
+  Prisma,
+} from '../prisma/prisma-client';
 // import { PrismaService } from '../prisma/prisma.service';
 import { prisma } from '../prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -9,6 +15,7 @@ export class UsersService {
 
   async store(user: UserCreateInput): Promise<User> {
     try {
+      user.password = await bcrypt.hash(user.password, 12);
       const userCreated = await prisma.createUser(user);
       userCreated.password = undefined;
       userCreated.emailToken = undefined;
@@ -17,11 +24,11 @@ export class UsersService {
       throw new InternalServerErrorException(error.message);
     }
   }
-  
-  async update(user: UserUpdateInput): Promise<User> {
+
+  async update(email: string, user: UserUpdateInput): Promise<User> {
     try {
       const userUpdated = await prisma.updateUser({
-        where: { email: user.email },
+        where: { email },
         data: user,
       });
       userUpdated.emailToken = undefined;

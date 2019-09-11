@@ -2,8 +2,8 @@ type User {
   id: ID! @id
   firstName: String!
   lastName: String!
-  primaryPhoneNumber: Float @unique
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String @unique
+  secondaryPhoneNumber: String
   email: String! @unique
   password: String
   emailIsVerified: Boolean @default(value: false)

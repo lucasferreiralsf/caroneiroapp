@@ -11,8 +11,6 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CUSTOM_ERROR_CODES } from '../config/custom-error-codes.config';
 import { User } from '../prisma/prisma-client';
-import * as firebase from 'firebase/app';
-import 'firebase/functions';
 
 export interface IAuth {
   readonly email: string;
@@ -158,37 +156,50 @@ export class AuthService {
     try {
       const userByToken: any = this.jwtService.verify(token);
       const user = await this.userService.findByEmail(userByToken.email);
-      if (user && token === user.emailToken) {
-        user.emailIsVerified = true;
-        user.id = undefined;
-        return await this.userService.update(user);
+      if (user && !user.emailIsVerified) {
+        if (user && token === user.emailToken) {
+          user.emailIsVerified = true;
+          user.id = undefined;
+          return await this.userService.update(user.email, {
+            emailIsVerified: true,
+          });
+        } else {
+          throw {
+            name: CUSTOM_ERROR_CODES.TOKEN_EXPIRED_ERROR.name,
+            message:
+              'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
+          };
+        }
       } else {
-        throw new InternalServerErrorException({
-          name: 'TokenExpiredError',
-          message:
-            'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
-        });
+        throw {
+          name: CUSTOM_ERROR_CODES.EMAIL_VALIDATED.name,
+          message: CUSTOM_ERROR_CODES.EMAIL_VALIDATED.message,
+        };
       }
     } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        const user = await this.userService.findByEmail(
-          (this.jwtService.decode(token) as any).email,
-        );
-        this.sendEmailVerification(user);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            ...CUSTOM_ERROR_CODES.JWT_INVALID,
-          },
-          403,
-        );
-      } else {
-        throw new HttpException(
-          {
-            error,
-          },
-          403,
-        );
+      switch (error.name) {
+        case CUSTOM_ERROR_CODES.TOKEN_EXPIRED_ERROR.name:
+          const user = await this.userService.findByEmail(
+            (this.jwtService.decode(token) as any).email,
+          );
+          user.emailToken = undefined;
+          user.password = undefined;
+          this.sendEmailVerification(user);
+          throw new HttpException(
+            {
+              status: HttpStatus.FORBIDDEN,
+              ...CUSTOM_ERROR_CODES.TOKEN_EXPIRED_ERROR,
+            },
+            403,
+          );
+
+        default:
+          throw new HttpException(
+            {
+              error,
+            },
+            403,
+          );
       }
     }
   }
@@ -248,35 +259,31 @@ export class AuthService {
       this.sendEmailVerification(user);
       return user;
     } else {
-      return 'error'
+      return 'error';
     }
   }
 
-  async sendEmailVerification(user: User) {
-    try {
-      const payload = {
-        id: user.id,
-        name: user.firstName,
-        email: user.email,
-      };
+  async sendEmailVerification(user: User): Promise<void> {
+    const payload = {
+      id: user.id,
+      name: user.firstName,
+      email: user.email,
+    };
 
-      const token = this.jwtService.sign(payload, { expiresIn: '2h' });
-      user.emailToken = token.toString();
-      await this.userService.update(user);
-      await this.mailerService.sendMail({
-        to: user.email, // sender address
-        from: 'no-reply@caroneiroapp.com.br', // list of receivers
-        subject: 'Account Confirmation ✔', // Subject line
-        template: 'account-confirm',
-        // html: `<h1>Bem vindo, seu token é: ${token}</h1>`,
-        context: {
-          // Data to be sent to template engine.
-          token,
-          name: `${user.firstName} ${user.lastName}`,
-        },
-      });
-    } catch (error) {
-      return error;
-    }
+    const token = this.jwtService.sign(payload, { expiresIn: '2h' });
+    user.emailToken = token.toString();
+    await this.userService.update(user.email, { emailToken: token });
+    await this.mailerService.sendMail({
+      to: user.email, // sender address
+      from: 'no-reply@caroneiroapp.com.br', // list of receivers
+      subject: 'Account Confirmation ✔', // Subject line
+      template: 'account-confirm',
+      // html: `<h1>Bem vindo, seu token é: ${token}</h1>`,
+      context: {
+        // Data to be sent to template engine.
+        token,
+        name: `${user.firstName} ${user.lastName}`,
+      },
+    });
   }
 }

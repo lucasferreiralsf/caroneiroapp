@@ -473,8 +473,8 @@ type User {
   id: ID!
   firstName: String!
   lastName: String!
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String!
   password: String
   emailIsVerified: Boolean
@@ -498,8 +498,8 @@ input UserCreateInput {
   id: ID
   firstName: String!
   lastName: String!
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String!
   password: String
   emailIsVerified: Boolean
@@ -525,8 +525,8 @@ input UserCreateWithoutOwnerTripsInput {
   id: ID
   firstName: String!
   lastName: String!
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String!
   password: String
   emailIsVerified: Boolean
@@ -541,8 +541,8 @@ input UserCreateWithoutTripsAsPassengerInput {
   id: ID
   firstName: String!
   lastName: String!
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String!
   password: String
   emailIsVerified: Boolean
@@ -593,8 +593,8 @@ type UserPreviousValues {
   id: ID!
   firstName: String!
   lastName: String!
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String!
   password: String
   emailIsVerified: Boolean
@@ -649,22 +649,34 @@ input UserScalarWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  primaryPhoneNumber: Float
-  primaryPhoneNumber_not: Float
-  primaryPhoneNumber_in: [Float!]
-  primaryPhoneNumber_not_in: [Float!]
-  primaryPhoneNumber_lt: Float
-  primaryPhoneNumber_lte: Float
-  primaryPhoneNumber_gt: Float
-  primaryPhoneNumber_gte: Float
-  secondaryPhoneNumber: Float
-  secondaryPhoneNumber_not: Float
-  secondaryPhoneNumber_in: [Float!]
-  secondaryPhoneNumber_not_in: [Float!]
-  secondaryPhoneNumber_lt: Float
-  secondaryPhoneNumber_lte: Float
-  secondaryPhoneNumber_gt: Float
-  secondaryPhoneNumber_gte: Float
+  primaryPhoneNumber: String
+  primaryPhoneNumber_not: String
+  primaryPhoneNumber_in: [String!]
+  primaryPhoneNumber_not_in: [String!]
+  primaryPhoneNumber_lt: String
+  primaryPhoneNumber_lte: String
+  primaryPhoneNumber_gt: String
+  primaryPhoneNumber_gte: String
+  primaryPhoneNumber_contains: String
+  primaryPhoneNumber_not_contains: String
+  primaryPhoneNumber_starts_with: String
+  primaryPhoneNumber_not_starts_with: String
+  primaryPhoneNumber_ends_with: String
+  primaryPhoneNumber_not_ends_with: String
+  secondaryPhoneNumber: String
+  secondaryPhoneNumber_not: String
+  secondaryPhoneNumber_in: [String!]
+  secondaryPhoneNumber_not_in: [String!]
+  secondaryPhoneNumber_lt: String
+  secondaryPhoneNumber_lte: String
+  secondaryPhoneNumber_gt: String
+  secondaryPhoneNumber_gte: String
+  secondaryPhoneNumber_contains: String
+  secondaryPhoneNumber_not_contains: String
+  secondaryPhoneNumber_starts_with: String
+  secondaryPhoneNumber_not_starts_with: String
+  secondaryPhoneNumber_ends_with: String
+  secondaryPhoneNumber_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]
@@ -779,8 +791,8 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   firstName: String
   lastName: String
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String
   password: String
   emailIsVerified: Boolean
@@ -795,8 +807,8 @@ input UserUpdateInput {
 input UserUpdateManyDataInput {
   firstName: String
   lastName: String
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String
   password: String
   emailIsVerified: Boolean
@@ -809,8 +821,8 @@ input UserUpdateManyDataInput {
 input UserUpdateManyMutationInput {
   firstName: String
   lastName: String
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String
   password: String
   emailIsVerified: Boolean
@@ -847,8 +859,8 @@ input UserUpdateOneRequiredWithoutOwnerTripsInput {
 input UserUpdateWithoutOwnerTripsDataInput {
   firstName: String
   lastName: String
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String
   password: String
   emailIsVerified: Boolean
@@ -862,8 +874,8 @@ input UserUpdateWithoutOwnerTripsDataInput {
 input UserUpdateWithoutTripsAsPassengerDataInput {
   firstName: String
   lastName: String
-  primaryPhoneNumber: Float
-  secondaryPhoneNumber: Float
+  primaryPhoneNumber: String
+  secondaryPhoneNumber: String
   email: String
   password: String
   emailIsVerified: Boolean
@@ -933,22 +945,34 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  primaryPhoneNumber: Float
-  primaryPhoneNumber_not: Float
-  primaryPhoneNumber_in: [Float!]
-  primaryPhoneNumber_not_in: [Float!]
-  primaryPhoneNumber_lt: Float
-  primaryPhoneNumber_lte: Float
-  primaryPhoneNumber_gt: Float
-  primaryPhoneNumber_gte: Float
-  secondaryPhoneNumber: Float
-  secondaryPhoneNumber_not: Float
-  secondaryPhoneNumber_in: [Float!]
-  secondaryPhoneNumber_not_in: [Float!]
-  secondaryPhoneNumber_lt: Float
-  secondaryPhoneNumber_lte: Float
-  secondaryPhoneNumber_gt: Float
-  secondaryPhoneNumber_gte: Float
+  primaryPhoneNumber: String
+  primaryPhoneNumber_not: String
+  primaryPhoneNumber_in: [String!]
+  primaryPhoneNumber_not_in: [String!]
+  primaryPhoneNumber_lt: String
+  primaryPhoneNumber_lte: String
+  primaryPhoneNumber_gt: String
+  primaryPhoneNumber_gte: String
+  primaryPhoneNumber_contains: String
+  primaryPhoneNumber_not_contains: String
+  primaryPhoneNumber_starts_with: String
+  primaryPhoneNumber_not_starts_with: String
+  primaryPhoneNumber_ends_with: String
+  primaryPhoneNumber_not_ends_with: String
+  secondaryPhoneNumber: String
+  secondaryPhoneNumber_not: String
+  secondaryPhoneNumber_in: [String!]
+  secondaryPhoneNumber_not_in: [String!]
+  secondaryPhoneNumber_lt: String
+  secondaryPhoneNumber_lte: String
+  secondaryPhoneNumber_gt: String
+  secondaryPhoneNumber_gte: String
+  secondaryPhoneNumber_contains: String
+  secondaryPhoneNumber_not_contains: String
+  secondaryPhoneNumber_starts_with: String
+  secondaryPhoneNumber_not_starts_with: String
+  secondaryPhoneNumber_ends_with: String
+  secondaryPhoneNumber_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]
@@ -1046,7 +1070,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  primaryPhoneNumber: Float
+  primaryPhoneNumber: String
   email: String
   googleId: String
   facebookId: String

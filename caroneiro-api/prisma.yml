@@ -1,9 +1,9 @@
 endpoint: https://prisma.cluster.caroneiroapp.com.br/caroneiro/${env:NODE_ENV}
+secret: 79dea521ddb251eb9700d849fa5fbf94
 datamodel: 
   - prisma/users.prisma
   - prisma/trip.prisma
 databaseType: document
-secret: 79dea521ddb251eb9700d849fa5fbf94
 
 generate:
   - generator: typescript-client

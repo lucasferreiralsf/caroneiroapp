@@ -3,7 +3,7 @@ import { Prisma } from '../prisma/prisma-client';
 import configEnv from '../config/environment.config';
 import nestjsConfig from '../config/nestjs.config';
 
-export const prisma = new Prisma({
+export const prisma: Prisma = new Prisma({
   endpoint: `https://prisma.cluster.caroneiroapp.com.br/caroneiro/${
     configEnv.env
   }`,
