@@ -6,7 +6,12 @@ import * as path from 'path';
   providers: [
     {
       provide: ConfigService,
-      useValue: new ConfigService(`${path.resolve('environments', `${process.env.NODE_ENV}.env`)}`),
+      useValue: new ConfigService(
+        `${path.resolve(
+          'environments',
+          `${process.env.NODE_ENV || 'default'}.env`,
+        )}`,
+      ),
     },
   ],
   exports: [ConfigService],

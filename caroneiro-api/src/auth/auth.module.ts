@@ -6,8 +6,10 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleStrategy } from './strategies/google.strategy';
-import { ConfigModule, ConfigService } from 'nestjs-config';
+// import { ConfigModule, ConfigService } from 'nestjs-config';
 import { AuthResolver } from './auth.resolver';
+import { ConfigService } from '../config/config.service';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
   imports: [
@@ -18,9 +20,11 @@ import { AuthResolver } from './auth.resolver';
     //     expiresIn: 3600,
     //   },
     // }),
+    ConfigModule,
     JwtModule.registerAsync({
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get('nestjs.SECRET_OR_PRIVATE_KEY'),
+        secret: await configService.getFile2('nestjs').default.SECRET_OR_PRIVATE_KEY,
         signOptions: {
           expiresIn: 3600,
         },
