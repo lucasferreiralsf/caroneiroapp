@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from 'nestjs-config';
 import * as path from 'path';
+import { GraphQLModule } from '@nestjs/graphql';
+// import { ConfigModule } from './config/config.module';
+// import { ConfigService } from './config/config.service';
 
 const ENV = process.env.NODE_ENV;
 @Module({
@@ -15,23 +17,41 @@ const ENV = process.env.NODE_ENV;
       // path: path.resolve(
       //   __dirname,
       //   '..',
-      //   'environments',
-      //   !ENV ? '.env' : `.env.${ENV}`,
+      //   // 'environments',
+      //   !ENV ? 'default.env' : `${ENV}.env`,
       // ),
       path: path.resolve(
-        process.cwd(),
         'environments',
-        !ENV ? '.env' : `${ENV}.env`,
+        !ENV ? 'default.env' : `${ENV}.env`,
       ),
     }),
-    MongooseModule.forRootAsync({
-      useFactory: (configService: ConfigService) => configService.get('database'),
-      inject: [ConfigService],
+    // ConfigModule,
+    // MongooseModule.forRootAsync({
+    //   useFactory: (configService: ConfigService) => configService.get('database'),
+    //   inject: [ConfigService],
+    // }),
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      path: '/',
+      installSubscriptionHandlers: true,
+      resolverValidationOptions: {
+        requireResolversForResolveType: false,
+      },
+      definitions: {
+        path: path.join(process.cwd(), 'src/graphql.schema.d.ts'),
+        outputAs: 'class',
+      },
     }),
     MailerModule.forRootAsync({
       useFactory: (configService: ConfigService) => configService.get('mailer'),
       inject: [ConfigService],
     }),
+    // MailerModule.forRootAsync({
+    //   useFactory: (configService: ConfigService) => ({
+    //     transport: configService.get('MAILER_MODULE_TRANSPORT'),
+    //   }),
+    //   inject: [ConfigService],
+    // }),
     AuthModule,
   ],
   controllers: [AppController],

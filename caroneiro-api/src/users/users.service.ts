@@ -1,31 +1,30 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { IUser } from './users.schema';
+import { User, UserCreateInput, UserUpdateInput, Prisma } from '../prisma/prisma-client';
+// import { PrismaService } from '../prisma/prisma.service';
+import { prisma } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel('Users') private readonly userSchema: Model<IUser>,
-  ) {}
+  // constructor(private readonly prisma: PrismaService) {}
 
-  async store(user: IUser): Promise<IUser> {
+  async store(user: UserCreateInput): Promise<User> {
     try {
-      const userCreated = await this.userSchema.create(user);
+      const userCreated = await prisma.createUser(user);
       userCreated.password = undefined;
+      userCreated.emailToken = undefined;
       return userCreated;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
   }
-
-  async update(user: IUser): Promise<IUser> {
+  
+  async update(user: UserUpdateInput): Promise<User> {
     try {
-      const userUpdated = await this.userSchema.findOneAndUpdate(
-        { email: user.email },
-        user,
-        { new: true },
-      );
+      const userUpdated = await prisma.updateUser({
+        where: { email: user.email },
+        data: user,
+      });
+      userUpdated.emailToken = undefined;
       userUpdated.password = undefined;
       return userUpdated;
     } catch (error) {
@@ -33,9 +32,9 @@ export class UsersService {
     }
   }
 
-  async findByEmail(email: string): Promise<IUser> {
+  async findByEmail(email: string): Promise<User> {
     try {
-      return await this.userSchema.findOne({ email }).select('+password');
+      return await prisma.user({ email });
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
