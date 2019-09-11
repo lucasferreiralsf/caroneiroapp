@@ -3,8 +3,7 @@ import * as path from 'path';
 
 export default {
   transport:
-    process.env.MAILER_MODULE_TRANSPORT ||
-    'smtp://no-reply@caroneiroapp.com.br:Car069471@smtp.umbler.com',
+    process.env.MAILER_MODULE_TRANSPORT,
   defaults: {
     from: '"CaroneiroAPP" <no-replay@caroneiroapp.com.br>',
   },
