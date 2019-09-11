@@ -1,0 +1,15 @@
+projects:
+  database:
+    schemaPath: src/prisma/prisma.graphql
+    secret: 79dea521ddb251eb9700d849fa5fbf94
+    extensions:
+      endpoints:
+        default: 
+          url: https://prisma.cluster.caroneiroapp.com.br/caroneiro/default
+          headers: 
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJjYXJvbmVpcm9AZGVmYXVsdCIsInJvbGVzIjpbImFkbWluIl19LCJpYXQiOjE1Njc5NjA2MzQsImV4cCI6MTU2ODU2NTQzNH0.f5ZgbJNoZKxKJOuYAnO3EwswMQoUovzRYc6OxKCCyoI'
+      codegen:
+        - generator: prisma-binding
+          language: typescript
+          output:
+            binding: src/prisma/prisma.binding.ts

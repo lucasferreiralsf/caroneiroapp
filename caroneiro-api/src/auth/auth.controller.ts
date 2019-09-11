@@ -12,6 +12,7 @@ import { AuthService, IAuth } from './auth.service';
 import { IUser } from '../users/users.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
+import { User } from '../prisma/prisma-client';
 
 @Controller('auth')
 export class AuthController {
@@ -23,8 +24,13 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() payload: IUser) {
+  async register(@Body() payload: User) {
     return await this.authService.register(payload);
+  }
+
+  @Post('resend-token')
+  async resendEmailToken(@Body() payload: {email: string}) {
+    return await this.authService.resendEmailVerification(payload.email);
   }
 
   @Get('validate/email/:emailToken')
@@ -32,10 +38,10 @@ export class AuthController {
     return await this.authService.validateEmailToken(emailToken);
   }
 
-  @Get('validate/phone/:phoneToken')
-  async validatePhoneToken(@Param() phoneToken: string) {
-    return await this.authService.validatePhoneToken(phoneToken);
-  }
+  // @Get('validate/phone/:phoneToken')
+  // async validatePhoneToken(@Param() phoneToken: string) {
+  //   return await this.authService.validatePhoneToken(phoneToken);
+  // }
 
   @Get('google')
   @UseGuards(AuthGuard('google'))

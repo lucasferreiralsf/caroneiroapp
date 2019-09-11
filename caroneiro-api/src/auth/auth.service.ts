@@ -5,15 +5,14 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import * as mongoose from 'mongoose';
 import { MailerService } from '@nest-modules/mailer';
 import { UsersService } from '../users/users.service';
-import { IUser, UserModel } from '../users/users.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CUSTOM_ERROR_CODES } from '../config/custom-error-codes.config';
+import { User } from '../prisma/prisma-client';
 
-export interface IAuth extends mongoose.Document {
+export interface IAuth {
   readonly email: string;
   readonly password: string;
 }
@@ -89,7 +88,7 @@ export class AuthService {
       if (user) {
         if (user.primaryPhoneNumber) {
           const payload = {
-            userId: user._id,
+            userId: user.id,
             provider,
           };
 
@@ -141,7 +140,7 @@ export class AuthService {
     // }
   }
 
-  async register(credentials: IUser): Promise<IUser> {
+  async register(credentials: User): Promise<User> {
     try {
       const userCreated = await this.userService.store(credentials);
       if (!userCreated.emailIsVerified) {
@@ -157,61 +156,95 @@ export class AuthService {
     try {
       const userByToken: any = this.jwtService.verify(token);
       const user = await this.userService.findByEmail(userByToken.email);
-      if (user) {
-        user.emailIsVerified = true;
-        return await this.userService.update(user);
-      } else {
-        throw new InternalServerErrorException(
-          'Erro interno, não foi possível validar seu email. Tente novamente.',
-        );
-      }
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        const user = await this.userService.findByEmail((this.jwtService.decode(token) as any).email);
-        this.sendEmailVerification(user);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            ...CUSTOM_ERROR_CODES.JWT_INVALID,
-          },
-          403,
-        );
-      } else {
-        throw new HttpException(
-          {
-            error,
-          },
-          403,
-        );
-      }
-    }
-  }
-
-  async validatePhoneToken(token) {
-    try {
-      const userByToken: any = this.jwtService.decode(token.toString());
-      if (userByToken.email) {
-        const user = await this.userService.findByEmail(userByToken.email);
-        if (user) {
+      if (user && !user.emailIsVerified) {
+        if (user && token === user.emailToken) {
           user.emailIsVerified = true;
-          return await this.userService.update(user);
+          user.id = undefined;
+          return await this.userService.update(user.email, {
+            emailIsVerified: true,
+          });
         } else {
-          throw new InternalServerErrorException(
-            'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
-          );
+          throw {
+            name: CUSTOM_ERROR_CODES.TOKEN_EXPIRED_ERROR.name,
+            message:
+              'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
+          };
         }
       } else {
-        this.sendEmailVerification(userByToken);
-        throw new InternalServerErrorException(
-          'Token inválido, foi enviado um novo token.',
-        );
+        throw {
+          name: CUSTOM_ERROR_CODES.EMAIL_VALIDATED.name,
+          message: CUSTOM_ERROR_CODES.EMAIL_VALIDATED.message,
+        };
       }
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      switch (error.name) {
+        case CUSTOM_ERROR_CODES.TOKEN_EXPIRED_ERROR.name:
+          const user = await this.userService.findByEmail(
+            (this.jwtService.decode(token) as any).email,
+          );
+          user.emailToken = undefined;
+          user.password = undefined;
+          this.sendEmailVerification(user);
+          throw new HttpException(
+            {
+              status: HttpStatus.FORBIDDEN,
+              ...CUSTOM_ERROR_CODES.TOKEN_EXPIRED_ERROR,
+            },
+            403,
+          );
+
+        default:
+          throw new HttpException(
+            {
+              error,
+            },
+            403,
+          );
+      }
     }
   }
 
-  validateEmailUser(user: IUser): boolean {
+  // async validatePhoneToken(code) {
+  //   try {
+  //     // const userByToken: any = this.jwtService.decode(token.toString());
+  //     var credential = firebase.auth.PhoneAuthProvider.credential(confirmationResult.verificationId, code);
+  //     if (userByToken.email) {
+  //       const user = await this.userService.findByEmail(userByToken.email);
+  //       if (user) {
+  //         user.emailIsVerified = true;
+  //         return await this.userService.update(user);
+  //       } else {
+  //         throw new InternalServerErrorException(
+  //           'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
+  //         );
+  //       }
+  //     } else {
+  //       this.sendEmailVerification(userByToken);
+  //       throw new InternalServerErrorException(
+  //         'Token inválido, foi enviado um novo token.',
+  //       );
+  //     }
+  //   } catch (error) {
+  //     throw new InternalServerErrorException(error.message);
+  //   }
+  // }
+
+  // async sendPhoneVerificationCode(user: User) {
+  //   const app: firebase.auth.RecaptchaVerifier = '123';
+  //   const confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, 123);
+  //   confirmationResult.verificationId
+  // }
+
+  // validatePhoneUser(user: User): boolean {
+  //   if(user.primaryPhoneNumberIsVerified) {
+  //     this.sendPhoneVerificationCode(user);
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  validateEmailUser(user: User): boolean {
     if (!user.emailIsVerified) {
       this.sendEmailVerification(user);
       return false;
@@ -220,7 +253,17 @@ export class AuthService {
     }
   }
 
-  sendEmailVerification(user: IUser) {
+  async resendEmailVerification(email: string) {
+    const user = await this.userService.findByEmail(email);
+    if (user.email === email) {
+      this.sendEmailVerification(user);
+      return user;
+    } else {
+      return 'error';
+    }
+  }
+
+  async sendEmailVerification(user: User): Promise<void> {
     const payload = {
       id: user.id,
       name: user.firstName,
@@ -228,7 +271,9 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payload, { expiresIn: '2h' });
-    this.mailerService.sendMail({
+    user.emailToken = token.toString();
+    await this.userService.update(user.email, { emailToken: token });
+    await this.mailerService.sendMail({
       to: user.email, // sender address
       from: 'no-reply@caroneiroapp.com.br', // list of receivers
       subject: 'Account Confirmation ✔', // Subject line
