@@ -13,37 +13,56 @@ steps:
   image: docker:dind
   volumes:
     - name: docker_sock
-      path: /var/run/docker.sock
+      path: /var/run
   commands:
+    - sleep 5
     - docker build --file="caroneiro-api/Dockerfile.prod" -t lucasferreira/caroneiroapp_api_dev:latest .
 
 - name: deploy
   image: docker/compose:1.25.0-rc2
   volumes:
     - name: docker_sock
-      path: /var/run/docker.sock
+      path: /var/run
   commands:
     - docker-compose -f docker-compose.dev.yml up --force-recreate -d
 
+# services:
+# - name: docker
+#   image: docker/compose:1.25.0-rc2
+#   privileged: true
+#   volumes:
+#   - name: docker_sock
+#     path: /var/run/docker.sock
+
+# - name: dockerdind
+#   image: docker:dind
+#   privileged: true
+#   volumes:
+#   - name: docker_sock
+#     path: /var/run/docker.sock
+
+# volumes:
+#   - name: docker_sock
+#     host:
+#       path: /var/run/docker.sock
 services:
 - name: docker
   image: docker/compose:1.25.0-rc2
   privileged: true
   volumes:
   - name: docker_sock
-    path: /var/run/docker.sock
+    path: /var/run
 
 - name: dockerdind
   image: docker:dind
   privileged: true
   volumes:
   - name: docker_sock
-    path: /var/run/docker.sock
+    path: /var/run
 
 volumes:
   - name: docker_sock
-    host:
-      path: /var/run/docker.sock
+    temp: {}
 
 trigger:
   branch:
