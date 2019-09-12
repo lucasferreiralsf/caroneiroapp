@@ -11,7 +11,7 @@ import {
 } from '../prisma/prisma-client';
 // import { PrismaService } from '../prisma/prisma.service';
 import { prisma } from '../prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
