@@ -1,7 +1,7 @@
-FROM node:12.10.0-alpine
-RUN apt-get update -y \
-  apt-get remove -y gyp \
-  apt-get install -y curl bzip2 build-essential g++ python git make gcc gcc-multilib node-gyp \
+FROM node:12
+RUN apt-get update -y  && \
+  apt-get remove -y gyp && \
+  apt-get install -y curl bzip2 build-essential g++ python git make gcc gcc-multilib node-gyp && \
   apt-get install -y pkg-config xserver-xorg-dev libxext-dev pkg-config libxi-dev libglu1-mesa-dev libglew-dev && \
   npm install prebuild-install node-pre-gyp node-gyp -g
 WORKDIR /caroneiro/api
