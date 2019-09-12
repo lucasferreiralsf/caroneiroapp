@@ -1,13 +1,10 @@
-FROM node:12.10.0-alpine
-# RUN apt-get update -y  && \
-#  apt-get remove -y gyp && \
-#  apt-get install -y curl bzip2 build-essential g++ python git make gcc gcc-multilib node-gyp && \
-#  apt-get install -y pkg-config xserver-xorg-dev libxext-dev pkg-config libxi-dev libglu1-mesa-dev libglew-dev && \
+FROM node:slim
+RUN apt-get update && apt-get install -y build-essential && apt-get install -y python && \
 #  npm install prebuild-install node-pre-gyp node-gyp -g
 WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json /caroneiro/api/package.json
 # RUN npm install -g @nestjs/cli
-RUN npm install
+RUN npm install --production
 COPY ./caroneiro-api /caroneiro/api
 RUN npm run build
 EXPOSE 7000
