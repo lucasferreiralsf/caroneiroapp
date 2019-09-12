@@ -55,7 +55,7 @@ export class AuthController {
     // handles the Google OAuth2 callback
     const token: string = req.user.token;
     if (token) {
-      res.status(200).json(token);
+      res.status(200).json(req.user);
     } else {
       res.status(403).json({
         code: req.user.status.code,

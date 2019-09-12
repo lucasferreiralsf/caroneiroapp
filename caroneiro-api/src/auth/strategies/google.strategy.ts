@@ -41,6 +41,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     done: Function,
   ) {
     try {
+      console.log(profile);
       // console.log('REQ: ', request);
 
       const user: {} = await this.authService.validateOAuthLogin(

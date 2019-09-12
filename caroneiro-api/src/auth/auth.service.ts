@@ -84,25 +84,19 @@ export class AuthService {
     provider: Provider,
   ): Promise<string | any> {
     if (provider === Provider.GOOGLE) {
-      const user = await this.userService.findByEmail(profile.email);
+      let user = await this.userService.findByEmail(profile.email);
       if (user) {
-        if (user.primaryPhoneNumber) {
-          const payload = {
-            userId: user.id,
-            provider,
-          };
-
-          const token: string = this.jwtService.sign(payload, {
-            expiresIn: 3600,
-          });
-
-          return { token };
-        } else {
-          return {
-            status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
-            data: user,
-          };
+        if (!user.googleId) {
+          await this.userService.update(user.email, { googleId: profile.sub });
         }
+        // if (user.primaryPhoneNumber) {
+        
+        // } else {
+        //   return {
+        //     status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
+        //     data: user,
+        //   };
+        // }
       } else {
         const use: any = {};
         use.email = profile.email;
@@ -111,12 +105,29 @@ export class AuthService {
         use.firstName = profile.given_name;
         use.lastName = profile.family_name;
 
-        const userRegistered = await this.userService.store(use);
-        return {
-          status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
-          data: userRegistered,
-        };
+        user = await this.userService.store(use);
+        // return {
+        //   status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
+        //   data: userRegistered,
+        // };
       }
+
+      const payload = {
+        userId: user.id,
+        userEmail: user.email,
+      };
+
+      const token: string = this.jwtService.sign(payload, {
+        expiresIn: 3600,
+      });
+
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        token,
+      };
     }
     // try {
     //   // You can add some registration logic here,

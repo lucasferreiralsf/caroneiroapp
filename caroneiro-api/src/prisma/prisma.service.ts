@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '../prisma/prisma-client';
-import configEnv from '../config/environment.config';
+import { ConfigService } from '../config/config.service';
+import * as path from 'path';
 
+const configService = new ConfigService(
+  path.resolve('environments', `${process.env.NODE_ENV || 'default'}.env`),
+);
 export const prisma: Prisma = new Prisma({
   endpoint: `https://prisma.cluster.caroneiroapp.com.br/caroneiro/${
-    configEnv.env
+    process.env.NODE_ENV || 'default'
   }`,
-  secret: configEnv.PRISMA_SECRET,
-  debug: configEnv.env === 'prod' ? false : true,
+  secret: configService.get('PRISMA_SECRET'),
+  debug: process.env.NODE_ENV === 'prod' ? false : true,
 });

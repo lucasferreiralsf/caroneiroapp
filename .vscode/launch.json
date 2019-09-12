@@ -13,7 +13,7 @@
       "cwd": "${workspaceRoot}/caroneiro-api",
       "runtimeArgs": [
           "-r",
-          "ts-node/register"
+          "ts-node/register",
       ],
       "internalConsoleOptions": "openOnSessionStart"
   },
