@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { ObjectID } from 'bson';
 
 interface IUser extends mongoose.Document {

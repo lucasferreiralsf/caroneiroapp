@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { MailerService } from '@nest-modules/mailer';
 import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CUSTOM_ERROR_CODES } from '../config/custom-error-codes.config';
 import { User } from '../prisma/prisma-client';
