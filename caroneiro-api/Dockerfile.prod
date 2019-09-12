@@ -1,11 +1,23 @@
-FROM node:12.10.0-slim
-RUN apt-get update && apt-get install -y build-essential && apt-get install -y python && \
-  npm install -g prebuild-install node-pre-gyp node-gyp
+FROM node:alpine as build
+
+RUN apk --no-cache add --virtual native-deps \
+  g++ gcc libgcc libstdc++ linux-headers autoconf automake make nasm python git && \
+  npm install --quiet node-gyp -g
+
 WORKDIR /caroneiro/api
+
 COPY ./caroneiro-api/package.json /caroneiro/api/package.json
-RUN npm uninstall bcrypt && npm install bcrypt@3.0.6
+
 RUN npm install --production
+
 COPY ./caroneiro-api /caroneiro/api
+
+FROM node:alpine
+
+COPY --from=build /caroneiro/api /caroneiro/api
+
 RUN npm run build
+
 EXPOSE 7000
+
 CMD [ "npm", "run", "start:prod" ]
