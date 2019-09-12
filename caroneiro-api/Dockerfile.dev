@@ -1,5 +1,6 @@
 FROM node:12
 #WORKDIR /caroneiro/api
+ENV HOME="."
 COPY ./caroneiro-api/package.json package.json
 # RUN npm install -g @nestjs/cli
 RUN npm install --production
