@@ -2,7 +2,7 @@ FROM node:12
 #WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json package.json
 # RUN npm install -g @nestjs/cli
-RUN npm install
+RUN npm install --production
 COPY ./caroneiro-api .
 RUN npm run build
 EXPOSE 7500
