@@ -5,7 +5,7 @@ FROM node:12.10.0-alpine
 RUN npm i -g npm
 WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json /caroneiro/api/package.json
-RUN npm --unsafe-perm install --production
+RUN npm --unsafe-perm install
 COPY ./caroneiro-api /caroneiro/api
 RUN npm run build
 EXPOSE 7000
