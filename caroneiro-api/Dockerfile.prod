@@ -1,9 +1,12 @@
-FROM node:12
-ENV HOME="."
+FROM node:12.10.0-alpine as build
+RUN apk --no-cache add --virtual native-deps \
+  g++ gcc libgcc libstdc++ linux-headers autoconf automake make nasm python git && \
+  npm install --quiet node-gyp -g
 #WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json package.json
 # RUN npm install -g @nestjs/cli
 RUN npm install --production
+FROM node:12.10.0-alpine
 COPY ./caroneiro-api .
 RUN npm run build
 EXPOSE 7000
