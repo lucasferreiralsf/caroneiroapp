@@ -1,9 +1,9 @@
-FROM node:slim
+FROM node:12.10.0-slim
 RUN apt-get update && apt-get install -y build-essential && apt-get install -y python && \
   npm install -g prebuild-install node-pre-gyp node-gyp
 WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json /caroneiro/api/package.json
-# RUN npm install -g @nestjs/cli
+RUN npm uninstall bcrypt && npm install bcrypt@3.0.6
 RUN npm install --production
 COPY ./caroneiro-api /caroneiro/api
 RUN npm run build
