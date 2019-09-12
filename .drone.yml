@@ -11,6 +11,8 @@ steps:
 
 - name: build
   image: docker:dind
+  environment:
+    npm_config_cache: npm-cache
   volumes:
     - name: docker_sock
       path: /var/run/docker.sock
