@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 // import { ConfigModule, ConfigService } from 'nestjs-config';
 import * as path from 'path';
-import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 
@@ -30,18 +29,6 @@ const ENV = process.env.NODE_ENV;
     //   useFactory: (configService: ConfigService) => configService.get('database'),
     //   inject: [ConfigService],
     // }),
-    GraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
-      path: '/',
-      installSubscriptionHandlers: true,
-      resolverValidationOptions: {
-        requireResolversForResolveType: false,
-      },
-      definitions: {
-        path: path.join(process.cwd(), 'src/graphql.schema.d.ts'),
-        outputAs: 'class',
-      },
-    }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => await configService.getFile('mailer'),
