@@ -1,7 +1,7 @@
 FROM node:12.10.0-alpine
 # RUN apt-get update -y && apt-get install -y build-essential && apt-get install -y python && npm i -g npm && \
 #  npm install -g prebuild-install node-pre-gyp node-gyp
-RUN update && apk upgrade && apk --no-cache add --virtual builds-deps build-base python
+RUN apk update && apk upgrade && apk --no-cache add --virtual builds-deps build-base python
 RUN npm i -g npm
 WORKDIR /caroneiro/api
 COPY ./caroneiro-api/package.json /caroneiro/api/package.json
