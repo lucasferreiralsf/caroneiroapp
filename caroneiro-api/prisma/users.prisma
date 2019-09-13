@@ -10,8 +10,8 @@ type User {
   primaryPhoneNumberIsVerified: Boolean @default(value: false)
   googleId: String @unique
   facebookId: String @unique
-  ownerTrips: [Trip!]! @relation(name: "OwnerTrips", link: INLINE)
-  tripsAsPassenger: [Trip!]! @relation(name: "TripsAsPassenger", link: INLINE)
+  ownerTravels: [Travel!]! @relation(name: "OwnerTravels", link: INLINE)
+  travelsAsPassenger: [Travel!]! @relation(name: "TravelsAsPassenger", link: INLINE)
   emailToken: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
