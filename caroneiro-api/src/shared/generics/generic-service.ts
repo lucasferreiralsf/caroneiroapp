@@ -26,11 +26,13 @@ export class GenericService<T> {
   }
 
   async fetchAll(
-    currentPage = 0,
-    perPage = 10,
+    currentPage: any = '0',
+    perPage: any = '10',
     getFn,
     countFn,
   ): Promise<PagedResponse<T>> {
+    currentPage = parseInt(currentPage);
+    perPage = parseInt(perPage);
     const skip = currentPage > 0 ? (currentPage - 1) * perPage : 0;
 
     const data = await getFn({
