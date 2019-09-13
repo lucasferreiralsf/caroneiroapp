@@ -1,57 +1,40 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   TravelCreateInput,
   Travel,
   TravelUpdateInput,
 } from '../prisma/prisma-client';
 import { prisma } from '../prisma/prisma.service';
-import { PagedResponse } from '../shared/generics/paged-response';
-import { GenericService } from '../shared/generics/generic-service';
+import { GenericService } from '../shared/generics/generic-service.generic';
+import { removeElementObject } from '../shared/helpers/remove-element-object';
 
 @Injectable()
 export class TravelsService extends GenericService<Travel> {
-
   async getAll(currentPage, perPage) {
-    return await this.fetchAll(currentPage, perPage, prisma.travels, prisma.travelsConnection);
+    return await this.fetchAll(
+      currentPage,
+      perPage,
+      prisma.travels,
+      prisma.travelsConnection,
+    );
   }
-  // async getAll(
-  //   currentPage: number = 0,
-  //   perPage: number = 10,
-  // ): Promise<PagedResponse<Travel>> {
-  //   const skip = currentPage > 0 ? (currentPage - 1) * perPage : 0;
-  //   const data = await prisma.travels({
-  //     skip,
-  //     first: perPage,
-  //   });
-
-  //   const count = await prisma.travelsConnection().aggregate().count();
-  //   return new PagedResponse(
-  //     count,
-  //     currentPage,
-  //     perPage,
-  //     data,
-  //   );
-  // }
 
   async createTravel(travel: TravelCreateInput): Promise<Travel> {
-    try {
-      return await prisma.createTravel(travel);
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+    const travelReduced = removeElementObject(travel, ['travelOwner']);
+    return await this.create(prisma.createTravel, {
+      travelOwner: { connect: { id: travel.travelOwner}},
+      ...travelReduced.objectReduced,
+    });
   }
 
-  async updateTravel1(
+  async updateTravel(
     travelId: number,
     travel: TravelUpdateInput,
   ): Promise<Travel> {
-    try {
-      return await prisma.updateTravel({
-        data: travel,
-        where: { id: travelId },
-      });
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+    return await this.update(prisma.updateTravel, travelId, travel);
+  }
+
+  async deleteTravel(travelId: number): Promise<Travel> {
+    return await this.delete(prisma.deleteTravel, travelId);
   }
 }
