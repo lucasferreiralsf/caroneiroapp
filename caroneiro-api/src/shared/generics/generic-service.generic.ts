@@ -1,20 +1,15 @@
 import { PagedResponse } from './paged-response.generic';
-import { InternalServerErrorException, BadRequestException } from '@nestjs/common';
-import { ModelCreateInput, ModelUpdateInput } from './model-create-update.generic';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  ModelCreateInput,
+  ModelUpdateInput,
+} from './model-create-update.generic';
+import { prisma } from '../../prisma/prisma.service';
 
 export class GenericService<T> {
-  // getFn: any;
-  // countFn: any;
-  // currentPage: any;
-  // perPage: any;
-
-  // constructor(currentPage, perPage, getFn, countFn) {
-  //   this.getFn = getFn;
-  //   this.countFn = countFn;
-  //   this.currentPage = currentPage;
-  //   this.perPage = perPage;
-  // }
-
   private paginateResponse(
     currentPage: number,
     perPage: number,
@@ -25,51 +20,90 @@ export class GenericService<T> {
   }
 
   protected async fetchAll(
+    resource: string,
     currentPage: any = '1',
     perPage: any = '10',
-    getFn,
-    countFn,
+    fragment?: string,
   ): Promise<PagedResponse<T>> {
     currentPage = Number(currentPage);
     perPage = Number(perPage);
     const skip = currentPage > 1 ? (currentPage - 1) * perPage : 0;
 
-    const data = await getFn({
-      skip,
-      first: perPage,
-    });
+    const data = fragment
+      ? await prisma[resource]({
+          skip,
+          first: perPage,
+        }).$fragment(fragment)
+      : await prisma[resource]({
+          skip,
+          first: perPage,
+        });
 
-    const count = await countFn()
+    const count = await prisma[`${resource}Connection`]()
       .aggregate()
       .count();
 
     return this.paginateResponse(currentPage, perPage, count, data);
   }
 
-  protected async fetchByEmail() {
-
-  }
-
-  protected async create(createFn: any, data: ModelCreateInput): Promise<T> {
+  protected async fetchBy(resource: string, fetchField: {}, fragment?: string) {
     try {
-      return await createFn(data);
+      const fetch = fragment
+        ? await prisma[resource](fetchField).$fragment(fragment)
+        : await prisma[resource](fetchField);
+      if (fetch) {
+        return fetch;
+      } else {
+        throw new NotFoundException(
+          `The resource ${Object.values(fetchField)} not found.`,
+          'Not found.',
+        );
+      }
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  protected async update(updateFn: any, id: string | number, data: ModelUpdateInput): Promise<T> {
+  protected async create(
+    resource: string,
+    data: ModelCreateInput,
+    fragment?: string,
+  ): Promise<T> {
     try {
-      return await updateFn({
-        where: id,
-        data,
-      });
+      return fragment
+        ? await prisma[resource](data).$fragment(fragment)
+        : await prisma[resource](data);
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
   }
 
-  protected async delete(deleteFn: any, id: string | number): Promise<T> {
-    throw new BadRequestException();
+  protected async update(
+    resource: any,
+    field: {},
+    updatedData: ModelUpdateInput,
+    fragment?: string,
+  ): Promise<T> {
+    try {
+      return fragment
+        ? await prisma[resource]({
+            where: field,
+            data: updatedData,
+          }).$fragment(fragment)
+        : await prisma[resource]({
+            where: field,
+            data: updatedData,
+          });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  protected async delete(resource: any, field: {}): Promise<T> {
+    try {
+      return await prisma[resource](field);
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

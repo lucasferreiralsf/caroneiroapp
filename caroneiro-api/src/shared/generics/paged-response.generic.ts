@@ -13,6 +13,8 @@ export class PagedResponse<T> {
     this.data = data;
     this.currentPage = currentPage;
     this.totalPages =
-      total % perPage === 0 ? total / perPage : Number(((total / perPage) + 1).toFixed(0));
+      total % perPage === 0
+        ? total / perPage
+        : parseInt((total / perPage).toString(), 10) + 1;
   }
 }

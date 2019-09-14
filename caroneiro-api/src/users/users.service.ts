@@ -1,55 +1,74 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  Inject,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   User,
   UserCreateInput,
   UserUpdateInput,
-  Prisma,
 } from '../prisma/prisma-client';
-// import { PrismaService } from '../prisma/prisma.service';
-import { prisma } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { GenericService } from '../shared/generics/generic-service.generic';
+import { UsersWithTravelsAndPassengers, UsersWithTravelsPassengerPassword } from './users.fragment';
+import { UserCreateDto } from './dto/user-create.dto';
+import { UserUpdateDto } from './dto/user-update.dto';
+import { removeElementObject } from '../shared/helpers/remove-element-object';
 
 @Injectable()
-export class UsersService {
+export class UsersService extends GenericService<User> {
   // constructor(private readonly prisma: Prisma) {}
 
-  async store(user: UserCreateInput): Promise<User> {
-    try {
-      if (user.password) {
-        user.password = await bcrypt.hash(user.password, 12);
-      }
-      const userCreated = await prisma.createUser(user);
+  async storeUser(user: UserCreateDto) {
+    if (user.password) {
+      user.password = await bcrypt.hash(user.password, 12);
+    }
+    const userReduced = removeElementObject(user, [
+      'ownerTravels',
+      'travelsAsPassenger',
+    ]);
+    const userCreated = await this.create(
+      'createUser',
+      {
+        ownerTravels: { connect: user.ownerTravels },
+        travelsAsPassenger: { connect: user.travelsAsPassenger },
+        ...userReduced.objectReduced,
+      },
+      UsersWithTravelsAndPassengers,
+    );
+    if (userCreated.password || userCreated.emailToken) {
       userCreated.password = undefined;
       userCreated.emailToken = undefined;
-      return userCreated;
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
     }
+    return userCreated;
   }
 
-  async update(email: string, user: UserUpdateInput): Promise<User> {
-    try {
-      const userUpdated = await prisma.updateUser({
-        where: { email },
-        data: user,
-      });
-      userUpdated.emailToken = undefined;
-      userUpdated.password = undefined;
-      return userUpdated;
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
+  async updateUser(email: string, user: UserUpdateDto) {
+    const userReduced = removeElementObject(user, [
+      'ownerTravels',
+      'travelsAsPassenger',
+    ]);
+    const userUpdated = await this.update(
+      'updateUser',
+      { email },
+      {
+        ownerTravels: { connect: user.ownerTravels },
+        travelsAsPassenger: { connect: user.travelsAsPassenger },
+        ...userReduced.objectReduced,
+      },
+      UsersWithTravelsAndPassengers,
+    );
+    userUpdated.emailToken = undefined;
+    userUpdated.password = undefined;
+    return userUpdated;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    try {
-      return await prisma.user({ email });
-    } catch (error) {
-      throw new Error('user not found');
-    }
+  async findByEmail(email: string, withPassword: boolean = false) {
+    return await this.fetchBy('user', { email }, withPassword ? UsersWithTravelsPassengerPassword : UsersWithTravelsAndPassengers);
+  }
+
+  async getAll(currentPage: string, perPage: string) {
+    return await this.fetchAll(
+      'users',
+      currentPage,
+      perPage,
+      UsersWithTravelsAndPassengers,
+    );
   }
 }

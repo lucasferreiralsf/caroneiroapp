@@ -9,10 +9,9 @@ import {
   Param,
 } from '@nestjs/common';
 import { AuthService, IAuth } from './auth.service';
-import { IUser } from '../users/users.schema';
 import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from 'express';
-import { User } from '../prisma/prisma-client';
+import { Response } from 'express';
+import { UserCreateDto } from '../users/dto/user-create.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +23,7 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() payload: User) {
+  async register(@Body() payload: UserCreateDto) {
     return await this.authService.register(payload);
   }
 

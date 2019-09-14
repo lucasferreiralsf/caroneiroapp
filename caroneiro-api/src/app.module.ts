@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { HandlebarsAdapter, MailerModule } from '@nest-modules/mailer';
+import { MailerModule } from '@nest-modules/mailer';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-// import { ConfigModule, ConfigService } from 'nestjs-config';
-import * as path from 'path';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { TravelsModule } from './travels/travels.module';

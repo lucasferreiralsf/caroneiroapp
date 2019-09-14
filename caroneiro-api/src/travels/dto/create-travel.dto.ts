@@ -7,8 +7,11 @@ import {
   IsBoolean,
   IsInt,
   IsIn,
+  IsOptional,
+  ValidateIf,
+  IsArray,
 } from 'class-validator';
-import { RecurrenceTypes } from 'src/prisma/prisma-client';
+import { RecurrenceTypes } from '../../prisma/prisma-client';
 
 export class CreateTravelDto {
   @IsNotEmpty()
@@ -28,19 +31,24 @@ export class CreateTravelDto {
   @IsNumber()
   travelOwner: number;
 
-  @IsNumber()
+  @IsOptional()
+  @IsArray()
   passengers?: number[];
 
+  @IsOptional()
   @IsBoolean()
   isSharingCost?: boolean;
 
+  @IsOptional()
   @IsBoolean()
   isRecurrent?: boolean;
 
+  @ValidateIf(o => o.isRecurrent === true)
   @IsInt()
   @Min(1)
   recurrenceTimes?: number;
 
+  @ValidateIf(o => o.isRecurrent === true)
   @IsIn(['DAILY', 'WEEKLY', 'MONTHLY'])
   recurrenceType?: RecurrenceTypes;
 }
