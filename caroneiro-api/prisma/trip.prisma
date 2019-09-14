@@ -1,15 +1,15 @@
 enum RecurrenceTypes { DAILY, WEEKLY, MONTHLY }
 
-type Trip {
+type Travel {
   id: ID! @id
   travelName: String!
   travelDate: DateTime!
   travelCost: Float!
-  travelOwner: User! @relation(name: "OwnerTrips")
-  passengers: [User!]! @relation(name: "TripsAsPassenger")
+  travelOwner: User! @relation(name: "OwnerTravels")
+  passengers: [User!]! @relation(name: "TravelsAsPassenger")
   isSharingCost: Boolean @default(value: false)
   isRecurrent: Boolean @default(value: false)
-  recurrenceTimes: Int
+  recurrenceTimes: Int @default(value: 1)
   recurrenceType: RecurrenceTypes
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt

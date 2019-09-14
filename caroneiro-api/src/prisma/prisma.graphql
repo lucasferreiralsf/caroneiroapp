@@ -1,4 +1,4 @@
-type AggregateTrip {
+type AggregateTravel {
   count: Int!
 }
 
@@ -15,12 +15,12 @@ scalar DateTime
 scalar Long
 
 type Mutation {
-  createTrip(data: TripCreateInput!): Trip!
-  updateTrip(data: TripUpdateInput!, where: TripWhereUniqueInput!): Trip
-  updateManyTrips(data: TripUpdateManyMutationInput!, where: TripWhereInput): BatchPayload!
-  upsertTrip(where: TripWhereUniqueInput!, create: TripCreateInput!, update: TripUpdateInput!): Trip!
-  deleteTrip(where: TripWhereUniqueInput!): Trip
-  deleteManyTrips(where: TripWhereInput): BatchPayload!
+  createTravel(data: TravelCreateInput!): Travel!
+  updateTravel(data: TravelUpdateInput!, where: TravelWhereUniqueInput!): Travel
+  updateManyTravels(data: TravelUpdateManyMutationInput!, where: TravelWhereInput): BatchPayload!
+  upsertTravel(where: TravelWhereUniqueInput!, create: TravelCreateInput!, update: TravelUpdateInput!): Travel!
+  deleteTravel(where: TravelWhereUniqueInput!): Travel
+  deleteManyTravels(where: TravelWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -47,9 +47,9 @@ type PageInfo {
 }
 
 type Query {
-  trip(where: TripWhereUniqueInput!): Trip
-  trips(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip]!
-  tripsConnection(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TripConnection!
+  travel(where: TravelWhereUniqueInput!): Travel
+  travels(where: TravelWhereInput, orderBy: TravelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Travel]!
+  travelsConnection(where: TravelWhereInput, orderBy: TravelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TravelConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -63,11 +63,11 @@ enum RecurrenceTypes {
 }
 
 type Subscription {
-  trip(where: TripSubscriptionWhereInput): TripSubscriptionPayload
+  travel(where: TravelSubscriptionWhereInput): TravelSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
-type Trip {
+type Travel {
   id: ID!
   travelName: String!
   travelDate: DateTime!
@@ -82,65 +82,65 @@ type Trip {
   updatedAt: DateTime!
 }
 
-type TripConnection {
+type TravelConnection {
   pageInfo: PageInfo!
-  edges: [TripEdge]!
-  aggregate: AggregateTrip!
+  edges: [TravelEdge]!
+  aggregate: AggregateTravel!
 }
 
-input TripCreateInput {
+input TravelCreateInput {
   id: ID
   travelName: String!
   travelDate: DateTime!
   travelCost: Float!
-  travelOwner: UserCreateOneWithoutOwnerTripsInput!
-  passengers: UserCreateManyWithoutTripsAsPassengerInput
+  travelOwner: UserCreateOneWithoutOwnerTravelsInput!
+  passengers: UserCreateManyWithoutTravelsAsPassengerInput
   isSharingCost: Boolean
   isRecurrent: Boolean
   recurrenceTimes: Int
   recurrenceType: RecurrenceTypes
 }
 
-input TripCreateManyWithoutPassengersInput {
-  create: [TripCreateWithoutPassengersInput!]
-  connect: [TripWhereUniqueInput!]
+input TravelCreateManyWithoutPassengersInput {
+  create: [TravelCreateWithoutPassengersInput!]
+  connect: [TravelWhereUniqueInput!]
 }
 
-input TripCreateManyWithoutTravelOwnerInput {
-  create: [TripCreateWithoutTravelOwnerInput!]
-  connect: [TripWhereUniqueInput!]
+input TravelCreateManyWithoutTravelOwnerInput {
+  create: [TravelCreateWithoutTravelOwnerInput!]
+  connect: [TravelWhereUniqueInput!]
 }
 
-input TripCreateWithoutPassengersInput {
+input TravelCreateWithoutPassengersInput {
   id: ID
   travelName: String!
   travelDate: DateTime!
   travelCost: Float!
-  travelOwner: UserCreateOneWithoutOwnerTripsInput!
+  travelOwner: UserCreateOneWithoutOwnerTravelsInput!
   isSharingCost: Boolean
   isRecurrent: Boolean
   recurrenceTimes: Int
   recurrenceType: RecurrenceTypes
 }
 
-input TripCreateWithoutTravelOwnerInput {
+input TravelCreateWithoutTravelOwnerInput {
   id: ID
   travelName: String!
   travelDate: DateTime!
   travelCost: Float!
-  passengers: UserCreateManyWithoutTripsAsPassengerInput
+  passengers: UserCreateManyWithoutTravelsAsPassengerInput
   isSharingCost: Boolean
   isRecurrent: Boolean
   recurrenceTimes: Int
   recurrenceType: RecurrenceTypes
 }
 
-type TripEdge {
-  node: Trip!
+type TravelEdge {
+  node: Travel!
   cursor: String!
 }
 
-enum TripOrderByInput {
+enum TravelOrderByInput {
   id_ASC
   id_DESC
   travelName_ASC
@@ -163,7 +163,7 @@ enum TripOrderByInput {
   updatedAt_DESC
 }
 
-type TripPreviousValues {
+type TravelPreviousValues {
   id: ID!
   travelName: String!
   travelDate: DateTime!
@@ -176,7 +176,7 @@ type TripPreviousValues {
   updatedAt: DateTime!
 }
 
-input TripScalarWhereInput {
+input TravelScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -253,50 +253,40 @@ input TripScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  AND: [TripScalarWhereInput!]
-  OR: [TripScalarWhereInput!]
-  NOT: [TripScalarWhereInput!]
+  AND: [TravelScalarWhereInput!]
+  OR: [TravelScalarWhereInput!]
+  NOT: [TravelScalarWhereInput!]
 }
 
-type TripSubscriptionPayload {
+type TravelSubscriptionPayload {
   mutation: MutationType!
-  node: Trip
+  node: Travel
   updatedFields: [String!]
-  previousValues: TripPreviousValues
+  previousValues: TravelPreviousValues
 }
 
-input TripSubscriptionWhereInput {
+input TravelSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: TripWhereInput
-  AND: [TripSubscriptionWhereInput!]
+  node: TravelWhereInput
+  AND: [TravelSubscriptionWhereInput!]
 }
 
-input TripUpdateInput {
+input TravelUpdateInput {
   travelName: String
   travelDate: DateTime
   travelCost: Float
-  travelOwner: UserUpdateOneRequiredWithoutOwnerTripsInput
-  passengers: UserUpdateManyWithoutTripsAsPassengerInput
+  travelOwner: UserUpdateOneRequiredWithoutOwnerTravelsInput
+  passengers: UserUpdateManyWithoutTravelsAsPassengerInput
   isSharingCost: Boolean
   isRecurrent: Boolean
   recurrenceTimes: Int
   recurrenceType: RecurrenceTypes
 }
 
-input TripUpdateManyDataInput {
-  travelName: String
-  travelDate: DateTime
-  travelCost: Float
-  isSharingCost: Boolean
-  isRecurrent: Boolean
-  recurrenceTimes: Int
-  recurrenceType: RecurrenceTypes
-}
-
-input TripUpdateManyMutationInput {
+input TravelUpdateManyDataInput {
   travelName: String
   travelDate: DateTime
   travelCost: Float
@@ -306,80 +296,90 @@ input TripUpdateManyMutationInput {
   recurrenceType: RecurrenceTypes
 }
 
-input TripUpdateManyWithoutPassengersInput {
-  create: [TripCreateWithoutPassengersInput!]
-  delete: [TripWhereUniqueInput!]
-  connect: [TripWhereUniqueInput!]
-  set: [TripWhereUniqueInput!]
-  disconnect: [TripWhereUniqueInput!]
-  update: [TripUpdateWithWhereUniqueWithoutPassengersInput!]
-  upsert: [TripUpsertWithWhereUniqueWithoutPassengersInput!]
-  deleteMany: [TripScalarWhereInput!]
-  updateMany: [TripUpdateManyWithWhereNestedInput!]
-}
-
-input TripUpdateManyWithoutTravelOwnerInput {
-  create: [TripCreateWithoutTravelOwnerInput!]
-  delete: [TripWhereUniqueInput!]
-  connect: [TripWhereUniqueInput!]
-  set: [TripWhereUniqueInput!]
-  disconnect: [TripWhereUniqueInput!]
-  update: [TripUpdateWithWhereUniqueWithoutTravelOwnerInput!]
-  upsert: [TripUpsertWithWhereUniqueWithoutTravelOwnerInput!]
-  deleteMany: [TripScalarWhereInput!]
-  updateMany: [TripUpdateManyWithWhereNestedInput!]
-}
-
-input TripUpdateManyWithWhereNestedInput {
-  where: TripScalarWhereInput!
-  data: TripUpdateManyDataInput!
-}
-
-input TripUpdateWithoutPassengersDataInput {
+input TravelUpdateManyMutationInput {
   travelName: String
   travelDate: DateTime
   travelCost: Float
-  travelOwner: UserUpdateOneRequiredWithoutOwnerTripsInput
   isSharingCost: Boolean
   isRecurrent: Boolean
   recurrenceTimes: Int
   recurrenceType: RecurrenceTypes
 }
 
-input TripUpdateWithoutTravelOwnerDataInput {
+input TravelUpdateManyWithoutPassengersInput {
+  create: [TravelCreateWithoutPassengersInput!]
+  delete: [TravelWhereUniqueInput!]
+  connect: [TravelWhereUniqueInput!]
+  set: [TravelWhereUniqueInput!]
+  disconnect: [TravelWhereUniqueInput!]
+  update: [TravelUpdateWithWhereUniqueWithoutPassengersInput!]
+  upsert: [TravelUpsertWithWhereUniqueWithoutPassengersInput!]
+  deleteMany: [TravelScalarWhereInput!]
+  updateMany: [TravelUpdateManyWithWhereNestedInput!]
+}
+
+input TravelUpdateManyWithoutTravelOwnerInput {
+  create: [TravelCreateWithoutTravelOwnerInput!]
+  delete: [TravelWhereUniqueInput!]
+  connect: [TravelWhereUniqueInput!]
+  set: [TravelWhereUniqueInput!]
+  disconnect: [TravelWhereUniqueInput!]
+  update: [TravelUpdateWithWhereUniqueWithoutTravelOwnerInput!]
+  upsert: [TravelUpsertWithWhereUniqueWithoutTravelOwnerInput!]
+  deleteMany: [TravelScalarWhereInput!]
+  updateMany: [TravelUpdateManyWithWhereNestedInput!]
+}
+
+input TravelUpdateManyWithWhereNestedInput {
+  where: TravelScalarWhereInput!
+  data: TravelUpdateManyDataInput!
+}
+
+input TravelUpdateWithoutPassengersDataInput {
   travelName: String
   travelDate: DateTime
   travelCost: Float
-  passengers: UserUpdateManyWithoutTripsAsPassengerInput
+  travelOwner: UserUpdateOneRequiredWithoutOwnerTravelsInput
   isSharingCost: Boolean
   isRecurrent: Boolean
   recurrenceTimes: Int
   recurrenceType: RecurrenceTypes
 }
 
-input TripUpdateWithWhereUniqueWithoutPassengersInput {
-  where: TripWhereUniqueInput!
-  data: TripUpdateWithoutPassengersDataInput!
+input TravelUpdateWithoutTravelOwnerDataInput {
+  travelName: String
+  travelDate: DateTime
+  travelCost: Float
+  passengers: UserUpdateManyWithoutTravelsAsPassengerInput
+  isSharingCost: Boolean
+  isRecurrent: Boolean
+  recurrenceTimes: Int
+  recurrenceType: RecurrenceTypes
 }
 
-input TripUpdateWithWhereUniqueWithoutTravelOwnerInput {
-  where: TripWhereUniqueInput!
-  data: TripUpdateWithoutTravelOwnerDataInput!
+input TravelUpdateWithWhereUniqueWithoutPassengersInput {
+  where: TravelWhereUniqueInput!
+  data: TravelUpdateWithoutPassengersDataInput!
 }
 
-input TripUpsertWithWhereUniqueWithoutPassengersInput {
-  where: TripWhereUniqueInput!
-  update: TripUpdateWithoutPassengersDataInput!
-  create: TripCreateWithoutPassengersInput!
+input TravelUpdateWithWhereUniqueWithoutTravelOwnerInput {
+  where: TravelWhereUniqueInput!
+  data: TravelUpdateWithoutTravelOwnerDataInput!
 }
 
-input TripUpsertWithWhereUniqueWithoutTravelOwnerInput {
-  where: TripWhereUniqueInput!
-  update: TripUpdateWithoutTravelOwnerDataInput!
-  create: TripCreateWithoutTravelOwnerInput!
+input TravelUpsertWithWhereUniqueWithoutPassengersInput {
+  where: TravelWhereUniqueInput!
+  update: TravelUpdateWithoutPassengersDataInput!
+  create: TravelCreateWithoutPassengersInput!
 }
 
-input TripWhereInput {
+input TravelUpsertWithWhereUniqueWithoutTravelOwnerInput {
+  where: TravelWhereUniqueInput!
+  update: TravelUpdateWithoutTravelOwnerDataInput!
+  create: TravelCreateWithoutTravelOwnerInput!
+}
+
+input TravelWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -458,10 +458,10 @@ input TripWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  AND: [TripWhereInput!]
+  AND: [TravelWhereInput!]
 }
 
-input TripWhereUniqueInput {
+input TravelWhereUniqueInput {
   id: ID
 }
 
@@ -477,8 +477,8 @@ type User {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  ownerTrips(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
-  tripsAsPassenger(where: TripWhereInput, orderBy: TripOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Trip!]
+  ownerTravels(where: TravelWhereInput, orderBy: TravelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Travel!]
+  travelsAsPassenger(where: TravelWhereInput, orderBy: TravelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Travel!]
   emailToken: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -502,22 +502,22 @@ input UserCreateInput {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  ownerTrips: TripCreateManyWithoutTravelOwnerInput
-  tripsAsPassenger: TripCreateManyWithoutPassengersInput
+  ownerTravels: TravelCreateManyWithoutTravelOwnerInput
+  travelsAsPassenger: TravelCreateManyWithoutPassengersInput
   emailToken: String
 }
 
-input UserCreateManyWithoutTripsAsPassengerInput {
-  create: [UserCreateWithoutTripsAsPassengerInput!]
+input UserCreateManyWithoutTravelsAsPassengerInput {
+  create: [UserCreateWithoutTravelsAsPassengerInput!]
   connect: [UserWhereUniqueInput!]
 }
 
-input UserCreateOneWithoutOwnerTripsInput {
-  create: UserCreateWithoutOwnerTripsInput
+input UserCreateOneWithoutOwnerTravelsInput {
+  create: UserCreateWithoutOwnerTravelsInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutOwnerTripsInput {
+input UserCreateWithoutOwnerTravelsInput {
   id: ID
   firstName: String!
   lastName: String!
@@ -529,11 +529,11 @@ input UserCreateWithoutOwnerTripsInput {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  tripsAsPassenger: TripCreateManyWithoutPassengersInput
+  travelsAsPassenger: TravelCreateManyWithoutPassengersInput
   emailToken: String
 }
 
-input UserCreateWithoutTripsAsPassengerInput {
+input UserCreateWithoutTravelsAsPassengerInput {
   id: ID
   firstName: String!
   lastName: String!
@@ -545,7 +545,7 @@ input UserCreateWithoutTripsAsPassengerInput {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  ownerTrips: TripCreateManyWithoutTravelOwnerInput
+  ownerTravels: TravelCreateManyWithoutTravelOwnerInput
   emailToken: String
 }
 
@@ -795,8 +795,8 @@ input UserUpdateInput {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  ownerTrips: TripUpdateManyWithoutTravelOwnerInput
-  tripsAsPassenger: TripUpdateManyWithoutPassengersInput
+  ownerTravels: TravelUpdateManyWithoutTravelOwnerInput
+  travelsAsPassenger: TravelUpdateManyWithoutPassengersInput
   emailToken: String
 }
 
@@ -828,14 +828,14 @@ input UserUpdateManyMutationInput {
   emailToken: String
 }
 
-input UserUpdateManyWithoutTripsAsPassengerInput {
-  create: [UserCreateWithoutTripsAsPassengerInput!]
+input UserUpdateManyWithoutTravelsAsPassengerInput {
+  create: [UserCreateWithoutTravelsAsPassengerInput!]
   delete: [UserWhereUniqueInput!]
   connect: [UserWhereUniqueInput!]
   set: [UserWhereUniqueInput!]
   disconnect: [UserWhereUniqueInput!]
-  update: [UserUpdateWithWhereUniqueWithoutTripsAsPassengerInput!]
-  upsert: [UserUpsertWithWhereUniqueWithoutTripsAsPassengerInput!]
+  update: [UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput!]
   deleteMany: [UserScalarWhereInput!]
   updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
@@ -845,14 +845,14 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
-input UserUpdateOneRequiredWithoutOwnerTripsInput {
-  create: UserCreateWithoutOwnerTripsInput
-  update: UserUpdateWithoutOwnerTripsDataInput
-  upsert: UserUpsertWithoutOwnerTripsInput
+input UserUpdateOneRequiredWithoutOwnerTravelsInput {
+  create: UserCreateWithoutOwnerTravelsInput
+  update: UserUpdateWithoutOwnerTravelsDataInput
+  upsert: UserUpsertWithoutOwnerTravelsInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutOwnerTripsDataInput {
+input UserUpdateWithoutOwnerTravelsDataInput {
   firstName: String
   lastName: String
   primaryPhoneNumber: String
@@ -863,11 +863,11 @@ input UserUpdateWithoutOwnerTripsDataInput {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  tripsAsPassenger: TripUpdateManyWithoutPassengersInput
+  travelsAsPassenger: TravelUpdateManyWithoutPassengersInput
   emailToken: String
 }
 
-input UserUpdateWithoutTripsAsPassengerDataInput {
+input UserUpdateWithoutTravelsAsPassengerDataInput {
   firstName: String
   lastName: String
   primaryPhoneNumber: String
@@ -878,24 +878,24 @@ input UserUpdateWithoutTripsAsPassengerDataInput {
   primaryPhoneNumberIsVerified: Boolean
   googleId: String
   facebookId: String
-  ownerTrips: TripUpdateManyWithoutTravelOwnerInput
+  ownerTravels: TravelUpdateManyWithoutTravelOwnerInput
   emailToken: String
 }
 
-input UserUpdateWithWhereUniqueWithoutTripsAsPassengerInput {
+input UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput {
   where: UserWhereUniqueInput!
-  data: UserUpdateWithoutTripsAsPassengerDataInput!
+  data: UserUpdateWithoutTravelsAsPassengerDataInput!
 }
 
-input UserUpsertWithoutOwnerTripsInput {
-  update: UserUpdateWithoutOwnerTripsDataInput!
-  create: UserCreateWithoutOwnerTripsInput!
+input UserUpsertWithoutOwnerTravelsInput {
+  update: UserUpdateWithoutOwnerTravelsDataInput!
+  create: UserCreateWithoutOwnerTravelsInput!
 }
 
-input UserUpsertWithWhereUniqueWithoutTripsAsPassengerInput {
+input UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput {
   where: UserWhereUniqueInput!
-  update: UserUpdateWithoutTripsAsPassengerDataInput!
-  create: UserCreateWithoutTripsAsPassengerInput!
+  update: UserUpdateWithoutTravelsAsPassengerDataInput!
+  create: UserCreateWithoutTravelsAsPassengerInput!
 }
 
 input UserWhereInput {
@@ -1029,8 +1029,8 @@ input UserWhereInput {
   facebookId_not_starts_with: String
   facebookId_ends_with: String
   facebookId_not_ends_with: String
-  ownerTrips_some: TripWhereInput
-  tripsAsPassenger_some: TripWhereInput
+  ownerTravels_some: TravelWhereInput
+  travelsAsPassenger_some: TravelWhereInput
   emailToken: String
   emailToken_not: String
   emailToken_in: [String!]

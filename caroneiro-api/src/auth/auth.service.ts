@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CUSTOM_ERROR_CODES } from '../config/custom-error-codes.config';
 import { User } from '../prisma/prisma-client';
+import { UserCreateDto } from 'src/users/dto/user-create.dto';
 
 export interface IAuth {
   readonly email: string;
@@ -55,7 +56,7 @@ export class AuthService {
   async login(
     credentials: IAuth,
   ): Promise<{ token: string } | { message: string }> {
-    const user = await this.userService.findByEmail(credentials.email);
+    const user = await this.userService.findByEmail(credentials.email, true);
 
     if (!user) {
       throw new UnauthorizedException();
@@ -87,10 +88,12 @@ export class AuthService {
       let user = await this.userService.findByEmail(profile.email);
       if (user) {
         if (!user.googleId) {
-          await this.userService.update(user.email, { googleId: profile.sub });
+          await this.userService.updateUser(user.email, {
+            googleId: profile.sub,
+          });
         }
         // if (user.primaryPhoneNumber) {
-        
+
         // } else {
         //   return {
         //     status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
@@ -105,7 +108,7 @@ export class AuthService {
         use.firstName = profile.given_name;
         use.lastName = profile.family_name;
 
-        user = await this.userService.store(use);
+        user = await this.userService.storeUser(use);
         // return {
         //   status: STATUSCODE.CREATED_NOT_PHONE_NUMBER,
         //   data: userRegistered,
@@ -151,9 +154,9 @@ export class AuthService {
     // }
   }
 
-  async register(credentials: User): Promise<User> {
+  async register(credentials: UserCreateDto): Promise<User> {
     try {
-      const userCreated = await this.userService.store(credentials);
+      const userCreated = await this.userService.storeUser(credentials);
       if (!userCreated.emailIsVerified) {
         this.sendEmailVerification(userCreated);
       }
@@ -166,12 +169,12 @@ export class AuthService {
   async validateEmailToken(token: string) {
     try {
       const userByToken: any = this.jwtService.verify(token);
-      const user = await this.userService.findByEmail(userByToken.email);
+      const user = await this.userService.findByEmail(userByToken.email, true);
       if (user && !user.emailIsVerified) {
         if (user && token === user.emailToken) {
           user.emailIsVerified = true;
           user.id = undefined;
-          return await this.userService.update(user.email, {
+          return await this.userService.updateUser(user.email, {
             emailIsVerified: true,
           });
         } else {
@@ -283,7 +286,7 @@ export class AuthService {
 
     const token = this.jwtService.sign(payload, { expiresIn: '2h' });
     user.emailToken = token.toString();
-    await this.userService.update(user.email, { emailToken: token });
+    await this.userService.updateUser(user.email, { emailToken: token });
     await this.mailerService.sendMail({
       to: user.email, // sender address
       from: 'no-reply@caroneiroapp.com.br', // list of receivers
