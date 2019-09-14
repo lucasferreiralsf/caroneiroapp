@@ -169,7 +169,7 @@ export class AuthService {
   async validateEmailToken(token: string) {
     try {
       const userByToken: any = this.jwtService.verify(token);
-      const user = await this.userService.findByEmail(userByToken.email);
+      const user = await this.userService.findByEmail(userByToken.email, true);
       if (user && !user.emailIsVerified) {
         if (user && token === user.emailToken) {
           user.emailIsVerified = true;

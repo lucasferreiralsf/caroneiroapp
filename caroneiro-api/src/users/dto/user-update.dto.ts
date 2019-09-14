@@ -39,13 +39,14 @@ export class UserUpdateDto {
   @IsEmpty()
   primaryPhoneNumberIsVerified?: boolean;
 
-  @IsOptional()
-  @IsString()
+  @IsEmpty()
   googleId?: string;
 
-  @IsOptional()
-  @IsString()
+  @IsEmpty()
   facebookId?: string;
+
+  @IsEmpty()
+  emailToken?: string;
 
   @IsOptional()
   @IsArray()
@@ -54,7 +55,4 @@ export class UserUpdateDto {
   @IsOptional()
   @IsArray()
   travelsAsPassenger?: Array<{ id: string }>;
-
-  @IsEmpty()
-  emailToken?: string;
 }
