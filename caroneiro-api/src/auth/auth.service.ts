@@ -8,10 +8,11 @@ import {
 import { MailerService } from '@nest-modules/mailer';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import * as twilio from 'twilio';
 import { JwtService } from '@nestjs/jwt';
 import { CUSTOM_ERROR_CODES } from '../config/custom-error-codes.config';
 import { User } from '../prisma/prisma-client';
-import { UserCreateDto } from 'src/users/dto/user-create.dto';
+import { UserCreateDto } from '../users/dto/user-create.dto';
 
 export interface IAuth {
   readonly email: string;
@@ -160,6 +161,9 @@ export class AuthService {
       if (!userCreated.emailIsVerified) {
         this.sendEmailVerification(userCreated);
       }
+      if (!userCreated.primaryPhoneNumberIsVerified) {
+        this.sendPhoneVerificationCode(userCreated.primaryPhoneNumber);
+      }
       return userCreated;
     } catch (error) {
       throw new InternalServerErrorException(error.message);
@@ -218,45 +222,52 @@ export class AuthService {
     }
   }
 
-  // async validatePhoneToken(code) {
-  //   try {
-  //     // const userByToken: any = this.jwtService.decode(token.toString());
-  //     var credential = firebase.auth.PhoneAuthProvider.credential(confirmationResult.verificationId, code);
-  //     if (userByToken.email) {
-  //       const user = await this.userService.findByEmail(userByToken.email);
-  //       if (user) {
-  //         user.emailIsVerified = true;
-  //         return await this.userService.update(user);
-  //       } else {
-  //         throw new InternalServerErrorException(
-  //           'Erro interno, não foi possível validar seu email. Foi enviado um novo token, tente novamente.',
-  //         );
-  //       }
-  //     } else {
-  //       this.sendEmailVerification(userByToken);
-  //       throw new InternalServerErrorException(
-  //         'Token inválido, foi enviado um novo token.',
-  //       );
-  //     }
-  //   } catch (error) {
-  //     throw new InternalServerErrorException(error.message);
-  //   }
-  // }
+  async validatePhoneToken(id, token: string, email: string) {
+    try {
+      const app = twilio(
+        'AC773cb145735ffdeba44ce8cf7c05f949',
+        '191fca18f9ebb4bc68b0c87850c6ec34',
+      );
+      return app.verify
+        .services('VA37120edc4cad0c4d27e00fa31ca479a4')
+        .verificationChecks.create({ to: `+55${id}`, code: token })
+        .then(async verification_check => {
+          const user = await this.userService.updateUser(email, {
+            primaryPhoneNumberIsVerified: true,
+          });
+          console.log('res', verification_check);
+          return user;
+        });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
 
-  // async sendPhoneVerificationCode(user: User) {
-  //   const app: firebase.auth.RecaptchaVerifier = '123';
-  //   const confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, 123);
-  //   confirmationResult.verificationId
-  // }
+  async sendPhoneVerificationCode(phone: string) {
+    const app = twilio(
+      'AC773cb145735ffdeba44ce8cf7c05f949',
+      '191fca18f9ebb4bc68b0c87850c6ec34',
+    );
+    return app.verify
+      .services('VA37120edc4cad0c4d27e00fa31ca479a4')
+      .verifications.create({
+        to: `+55${phone}`,
+        channel: 'sms',
+      })
+      .then(varification => {
+        console.log(varification);
+        return varification;
+      });
+  }
 
-  // validatePhoneUser(user: User): boolean {
-  //   if(user.primaryPhoneNumberIsVerified) {
-  //     this.sendPhoneVerificationCode(user);
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
+  validatePhoneUser(user: User): boolean {
+    if (user.primaryPhoneNumberIsVerified) {
+      this.sendPhoneVerificationCode(user.primaryPhoneNumber);
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   validateEmailUser(user: User): boolean {
     if (!user.emailIsVerified) {

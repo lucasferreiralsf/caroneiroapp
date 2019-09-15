@@ -37,10 +37,10 @@ export class AuthController {
     return await this.authService.validateEmailToken(emailToken);
   }
 
-  // @Get('validate/phone/:phoneToken')
-  // async validatePhoneToken(@Param() phoneToken: string) {
-  //   return await this.authService.validatePhoneToken(phoneToken);
-  // }
+  @Get('validate/phone/:id/:phoneToken/:email')
+  async validatePhoneToken(@Param('id') id: string, @Param('phoneToken') phoneToken: string, @Param('email') email: string) {
+    return await this.authService.validatePhoneToken(id, phoneToken, email);
+  }
 
   @Get('google')
   @UseGuards(AuthGuard('google'))

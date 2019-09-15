@@ -30,7 +30,7 @@ export class UserCreateDto {
   @IsPhoneNumber('BR')
   secondaryPhoneNumber?: string;
 
-  @ValidateIf(o => o.googleId.length === 0 && o.facebookId.length === 0)
+  @ValidateIf(o => o.googleId && o.facebookId)
   @IsNotEmpty()
   password?: string;
 
