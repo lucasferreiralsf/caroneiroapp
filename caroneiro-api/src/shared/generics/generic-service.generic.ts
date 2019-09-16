@@ -46,7 +46,7 @@ export class GenericService<T> {
     return this.paginateResponse(currentPage, perPage, count, data);
   }
 
-  protected async fetchBy(resource: string, fetchField: {}, fragment?: string) {
+  protected async fetchBy(resource: string, fetchField: {}, fragment?: string): Promise<T> {
     try {
       const fetch = fragment
         ? await prisma[resource](fetchField).$fragment(fragment)

@@ -28,12 +28,12 @@ export class CreateTravelDto {
   travelCost: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  travelOwner: number;
+  @IsString()
+  travelOwner: string;
 
   @IsOptional()
   @IsArray()
-  passengers?: number[];
+  passengers?: string[];
 
   @IsOptional()
   @IsBoolean()

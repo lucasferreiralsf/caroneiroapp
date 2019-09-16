@@ -32,6 +32,7 @@
     "dotenv": "^8.1.0",
     "messagebird": "^3.0.0",
     "mongoose": "^5.6.11",
+    "multer": "^1.4.2",
     "nestjs-config": "^1.4.4",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",

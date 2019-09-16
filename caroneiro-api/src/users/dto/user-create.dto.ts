@@ -7,6 +7,7 @@ import {
   IsEmail,
   IsPhoneNumber,
   IsEmpty,
+  Allow,
 } from 'class-validator';
 
 export class UserCreateDto {
@@ -29,6 +30,10 @@ export class UserCreateDto {
   @IsOptional()
   @IsPhoneNumber('BR')
   secondaryPhoneNumber?: string;
+
+  @IsOptional()
+  @Allow()
+  picture?: string;
 
   @ValidateIf(o => o.googleId && o.facebookId)
   @IsNotEmpty()

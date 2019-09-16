@@ -473,6 +473,7 @@ type User {
   id: ID!
   firstName: String!
   lastName: String!
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String!
@@ -498,6 +499,7 @@ input UserCreateInput {
   id: ID
   firstName: String!
   lastName: String!
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String!
@@ -525,6 +527,7 @@ input UserCreateWithoutOwnerTravelsInput {
   id: ID
   firstName: String!
   lastName: String!
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String!
@@ -541,6 +544,7 @@ input UserCreateWithoutTravelsAsPassengerInput {
   id: ID
   firstName: String!
   lastName: String!
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String!
@@ -565,6 +569,8 @@ enum UserOrderByInput {
   firstName_DESC
   lastName_ASC
   lastName_DESC
+  picture_ASC
+  picture_DESC
   primaryPhoneNumber_ASC
   primaryPhoneNumber_DESC
   secondaryPhoneNumber_ASC
@@ -593,6 +599,7 @@ type UserPreviousValues {
   id: ID!
   firstName: String!
   lastName: String!
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String!
@@ -649,6 +656,20 @@ input UserScalarWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   primaryPhoneNumber: String
   primaryPhoneNumber_not: String
   primaryPhoneNumber_in: [String!]
@@ -791,6 +812,7 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   firstName: String
   lastName: String
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String
@@ -807,6 +829,7 @@ input UserUpdateInput {
 input UserUpdateManyDataInput {
   firstName: String
   lastName: String
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String
@@ -821,6 +844,7 @@ input UserUpdateManyDataInput {
 input UserUpdateManyMutationInput {
   firstName: String
   lastName: String
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String
@@ -859,6 +883,7 @@ input UserUpdateOneRequiredWithoutOwnerTravelsInput {
 input UserUpdateWithoutOwnerTravelsDataInput {
   firstName: String
   lastName: String
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String
@@ -874,6 +899,7 @@ input UserUpdateWithoutOwnerTravelsDataInput {
 input UserUpdateWithoutTravelsAsPassengerDataInput {
   firstName: String
   lastName: String
+  picture: String
   primaryPhoneNumber: String
   secondaryPhoneNumber: String
   email: String
@@ -945,6 +971,20 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   primaryPhoneNumber: String
   primaryPhoneNumber_not: String
   primaryPhoneNumber_in: [String!]

@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UsersSchema } from './users.schema';
-import { PrismaModule } from '../prisma/prisma.module';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
   imports: [
@@ -11,6 +9,7 @@ import { PrismaModule } from '../prisma/prisma.module';
     //   { name: 'Users', schema: UsersSchema },
     // ]),
     // PrismaModule,
+    ConfigModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],

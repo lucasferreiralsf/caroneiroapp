@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import {
-  User,
-  UserCreateInput,
-  UserUpdateInput,
-} from '../prisma/prisma-client';
+import { User } from '../prisma/prisma-client';
 import * as bcrypt from 'bcrypt';
 import { GenericService } from '../shared/generics/generic-service.generic';
-import { UsersWithTravelsAndPassengers, UsersWithTravelsPassengerPassword } from './users.fragment';
+import {
+  UsersWithTravelsAndPassengers,
+  UsersWithTravelsPassengerPassword,
+  AllUsersWithTravelsAndPassengers,
+} from './users.fragment';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { removeElementObject } from '../shared/helpers/remove-element-object';
+import { ConfigService } from '../config/config.service';
+import * as path from 'path';
 
 @Injectable()
 export class UsersService extends GenericService<User> {
-  // constructor(private readonly prisma: Prisma) {}
+  constructor(private readonly configService: ConfigService) {
+    super();
+  }
 
   async storeUser(user: UserCreateDto) {
     if (user.password) {
@@ -39,14 +43,17 @@ export class UsersService extends GenericService<User> {
     return userCreated;
   }
 
-  async updateUser(email: string, user: UserUpdateDto) {
+  async updateUser(
+    field: { email: string } | { primaryPhoneNumber: string } | { id: string },
+    user: UserUpdateDto,
+  ) {
     const userReduced = removeElementObject(user, [
       'ownerTravels',
       'travelsAsPassenger',
     ]);
     const userUpdated = await this.update(
       'updateUser',
-      { email },
+      field,
       {
         ownerTravels: { connect: user.ownerTravels },
         travelsAsPassenger: { connect: user.travelsAsPassenger },
@@ -59,8 +66,22 @@ export class UsersService extends GenericService<User> {
     return userUpdated;
   }
 
-  async findByEmail(email: string, withPassword: boolean = false) {
-    return await this.fetchBy('user', { email }, withPassword ? UsersWithTravelsPassengerPassword : UsersWithTravelsAndPassengers);
+  async uploadPhoto(picture, id: string) {
+    const pathString = `${this.configService.get('HOST_API')}/${picture.path}`;
+    return await this.updateUser({ id }, { picture: pathString.replace(/\\/g, '/') });
+  }
+
+  async findBy(
+    field: { email: string } | { primaryPhoneNumber: string },
+    withPassword: boolean = false,
+  ) {
+    return await this.fetchBy(
+      'user',
+      field,
+      withPassword
+        ? UsersWithTravelsPassengerPassword
+        : UsersWithTravelsAndPassengers,
+    );
   }
 
   async getAll(currentPage: string, perPage: string) {
@@ -68,7 +89,7 @@ export class UsersService extends GenericService<User> {
       'users',
       currentPage,
       perPage,
-      UsersWithTravelsAndPassengers,
+      AllUsersWithTravelsAndPassengers,
     );
   }
 }

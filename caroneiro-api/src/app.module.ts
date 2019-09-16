@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nest-modules/mailer';
+import { MulterModule } from '@nestjs/platform-express';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -16,8 +17,15 @@ import { TravelsModule } from './travels/travels.module';
     // }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => await configService.getFile('mailer'),
+      useFactory: async (configService: ConfigService) =>
+        await configService.getFile('mailer'),
       inject: [ConfigService],
+    }),
+    MulterModule.register({
+      dest: '/upload',
+      limits: {
+        fileSize: 2097152,
+      },
     }),
     AuthModule,
     TravelsModule,

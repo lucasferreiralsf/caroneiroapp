@@ -5,6 +5,7 @@ fragment UsersWithTravelsAndPassengers on Users  {
   lastName
   primaryPhoneNumber
   secondaryPhoneNumber
+  picture
   email
   emailIsVerified
   primaryPhoneNumberIsVerified
@@ -38,6 +39,46 @@ fragment UsersWithTravelsAndPassengers on Users  {
   }
 }
 `;
+export const AllUsersWithTravelsAndPassengers = `
+fragment AllUsersWithTravelsAndPassengers on Users  {
+  id
+  firstName
+  lastName
+  primaryPhoneNumber
+  secondaryPhoneNumber
+  picture
+  email
+  emailIsVerified
+  primaryPhoneNumberIsVerified
+  createdAt
+  updatedAt
+  ownerTravels {
+    id
+    travelName
+    travelDate
+    travelCost
+    isSharingCost
+    isRecurrent
+    recurrenceTimes
+    recurrenceType
+    createdAt
+    updatedAt
+  }
+  travelsAsPassenger {
+    id
+    travelName
+    travelDate
+    travelCost
+    isSharingCost
+    isRecurrent
+    recurrenceTimes
+    recurrenceType
+    createdAt
+    updatedAt
+  }
+}
+`;
+
 export const UsersWithTravelsPassengerPassword = `
 fragment UsersWithTravelsPassengerPassword on Users  {
   id
@@ -45,6 +86,7 @@ fragment UsersWithTravelsPassengerPassword on Users  {
   lastName
   primaryPhoneNumber
   secondaryPhoneNumber
+  picture
   email
   emailIsVerified
   password

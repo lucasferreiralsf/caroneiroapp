@@ -7,6 +7,7 @@ import {
   IsEmail,
   IsPhoneNumber,
   IsEmpty,
+  Allow,
 } from 'class-validator';
 
 export class UserUpdateDto {
@@ -29,6 +30,10 @@ export class UserUpdateDto {
   @IsOptional()
   @IsPhoneNumber('BR')
   secondaryPhoneNumber?: string;
+
+  @IsOptional()
+  @Allow()
+  picture?: string;
 
   @IsEmpty()
   password?: string;

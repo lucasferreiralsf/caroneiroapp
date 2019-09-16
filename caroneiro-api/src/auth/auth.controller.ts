@@ -8,17 +8,18 @@ import {
   Res,
   Param,
 } from '@nestjs/common';
-import { AuthService, IAuth } from './auth.service';
+import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { UserCreateDto } from '../users/dto/user-create.dto';
+import { Auth } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() payload: IAuth) {
+  async login(@Body() payload: Auth) {
     return await this.authService.login(payload);
   }
 
@@ -28,8 +29,12 @@ export class AuthController {
   }
 
   @Post('resend-token')
-  async resendEmailToken(@Body() payload: {email: string}) {
-    return await this.authService.resendEmailVerification(payload.email);
+  async resendEmailToken(@Body() payload: { email?: string; phone?: string }) {
+    if (payload.phone) {
+      return await this.authService.resendPhoneVerification(payload.phone);
+    } else {
+      return await this.authService.resendEmailVerification(payload.email);
+    }
   }
 
   @Get('validate/email/:emailToken')
@@ -37,9 +42,12 @@ export class AuthController {
     return await this.authService.validateEmailToken(emailToken);
   }
 
-  @Get('validate/phone/:id/:phoneToken/:email')
-  async validatePhoneToken(@Param('id') id: string, @Param('phoneToken') phoneToken: string, @Param('email') email: string) {
-    return await this.authService.validatePhoneToken(id, phoneToken, email);
+  @Get('validate/phone/:phone/:token')
+  async validatePhoneToken(
+    @Param('phone') phone: string,
+    @Param('token') token: string,
+  ) {
+    return await this.authService.validatePhoneToken(phone, token);
   }
 
   @Get('google')

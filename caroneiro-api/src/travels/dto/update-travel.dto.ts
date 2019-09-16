@@ -30,11 +30,11 @@ export class UpdateTravelDto {
   travelCost?: number;
 
   @IsEmpty()
-  travelOwner?: number;
+  travelOwner?: string;
 
   @IsOptional()
   @IsArray()
-  passengers?: number[];
+  passengers?: string[];
 
   @IsOptional()
   @IsBoolean()

@@ -171,6 +171,8 @@ export type UserOrderByInput =
   | "firstName_DESC"
   | "lastName_ASC"
   | "lastName_DESC"
+  | "picture_ASC"
+  | "picture_DESC"
   | "primaryPhoneNumber_ASC"
   | "primaryPhoneNumber_DESC"
   | "secondaryPhoneNumber_ASC"
@@ -196,90 +198,80 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
+export interface UserUpdateOneRequiredWithoutOwnerTravelsInput {
+  create?: Maybe<UserCreateWithoutOwnerTravelsInput>;
+  update?: Maybe<UserUpdateWithoutOwnerTravelsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutOwnerTravelsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
 export type TravelWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface TravelWhereInput {
+export interface TravelCreateWithoutPassengersInput {
   id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  travelName?: Maybe<String>;
-  travelName_not?: Maybe<String>;
-  travelName_in?: Maybe<String[] | String>;
-  travelName_not_in?: Maybe<String[] | String>;
-  travelName_lt?: Maybe<String>;
-  travelName_lte?: Maybe<String>;
-  travelName_gt?: Maybe<String>;
-  travelName_gte?: Maybe<String>;
-  travelName_contains?: Maybe<String>;
-  travelName_not_contains?: Maybe<String>;
-  travelName_starts_with?: Maybe<String>;
-  travelName_not_starts_with?: Maybe<String>;
-  travelName_ends_with?: Maybe<String>;
-  travelName_not_ends_with?: Maybe<String>;
-  travelDate?: Maybe<DateTimeInput>;
-  travelDate_not?: Maybe<DateTimeInput>;
-  travelDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  travelDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  travelDate_lt?: Maybe<DateTimeInput>;
-  travelDate_lte?: Maybe<DateTimeInput>;
-  travelDate_gt?: Maybe<DateTimeInput>;
-  travelDate_gte?: Maybe<DateTimeInput>;
-  travelCost?: Maybe<Float>;
-  travelCost_not?: Maybe<Float>;
-  travelCost_in?: Maybe<Float[] | Float>;
-  travelCost_not_in?: Maybe<Float[] | Float>;
-  travelCost_lt?: Maybe<Float>;
-  travelCost_lte?: Maybe<Float>;
-  travelCost_gt?: Maybe<Float>;
-  travelCost_gte?: Maybe<Float>;
-  travelOwner?: Maybe<UserWhereInput>;
-  passengers_some?: Maybe<UserWhereInput>;
+  travelName: String;
+  travelDate: DateTimeInput;
+  travelCost: Float;
+  travelOwner: UserCreateOneWithoutOwnerTravelsInput;
   isSharingCost?: Maybe<Boolean>;
-  isSharingCost_not?: Maybe<Boolean>;
   isRecurrent?: Maybe<Boolean>;
-  isRecurrent_not?: Maybe<Boolean>;
   recurrenceTimes?: Maybe<Int>;
-  recurrenceTimes_not?: Maybe<Int>;
-  recurrenceTimes_in?: Maybe<Int[] | Int>;
-  recurrenceTimes_not_in?: Maybe<Int[] | Int>;
-  recurrenceTimes_lt?: Maybe<Int>;
-  recurrenceTimes_lte?: Maybe<Int>;
-  recurrenceTimes_gt?: Maybe<Int>;
-  recurrenceTimes_gte?: Maybe<Int>;
   recurrenceType?: Maybe<RecurrenceTypes>;
-  recurrenceType_not?: Maybe<RecurrenceTypes>;
-  recurrenceType_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
-  recurrenceType_not_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<TravelWhereInput[] | TravelWhereInput>;
+}
+
+export interface TravelUpdateManyWithoutTravelOwnerInput {
+  create?: Maybe<
+    TravelCreateWithoutTravelOwnerInput[] | TravelCreateWithoutTravelOwnerInput
+  >;
+  delete?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  set?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  disconnect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  update?: Maybe<
+    | TravelUpdateWithWhereUniqueWithoutTravelOwnerInput[]
+    | TravelUpdateWithWhereUniqueWithoutTravelOwnerInput
+  >;
+  upsert?: Maybe<
+    | TravelUpsertWithWhereUniqueWithoutTravelOwnerInput[]
+    | TravelUpsertWithWhereUniqueWithoutTravelOwnerInput
+  >;
+  deleteMany?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
+  updateMany?: Maybe<
+    | TravelUpdateManyWithWhereNestedInput[]
+    | TravelUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserCreateManyWithoutTravelsAsPassengerInput {
+  create?: Maybe<
+    | UserCreateWithoutTravelsAsPassengerInput[]
+    | UserCreateWithoutTravelsAsPassengerInput
+  >;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface TravelUpdateWithWhereUniqueWithoutPassengersInput {
+  where: TravelWhereUniqueInput;
+  data: TravelUpdateWithoutPassengersDataInput;
+}
+
+export interface UserCreateWithoutTravelsAsPassengerInput {
+  id?: Maybe<ID_Input>;
+  firstName: String;
+  lastName: String;
+  picture?: Maybe<String>;
+  primaryPhoneNumber?: Maybe<String>;
+  secondaryPhoneNumber?: Maybe<String>;
+  email: String;
+  password?: Maybe<String>;
+  emailIsVerified?: Maybe<Boolean>;
+  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+  ownerTravels?: Maybe<TravelCreateManyWithoutTravelOwnerInput>;
+  emailToken?: Maybe<String>;
 }
 
 export interface UserWhereInput {
@@ -325,6 +317,20 @@ export interface UserWhereInput {
   lastName_not_starts_with?: Maybe<String>;
   lastName_ends_with?: Maybe<String>;
   lastName_not_ends_with?: Maybe<String>;
+  picture?: Maybe<String>;
+  picture_not?: Maybe<String>;
+  picture_in?: Maybe<String[] | String>;
+  picture_not_in?: Maybe<String[] | String>;
+  picture_lt?: Maybe<String>;
+  picture_lte?: Maybe<String>;
+  picture_gt?: Maybe<String>;
+  picture_gte?: Maybe<String>;
+  picture_contains?: Maybe<String>;
+  picture_not_contains?: Maybe<String>;
+  picture_starts_with?: Maybe<String>;
+  picture_not_starts_with?: Maybe<String>;
+  picture_ends_with?: Maybe<String>;
+  picture_not_ends_with?: Maybe<String>;
   primaryPhoneNumber?: Maybe<String>;
   primaryPhoneNumber_not?: Maybe<String>;
   primaryPhoneNumber_in?: Maybe<String[] | String>;
@@ -448,96 +454,20 @@ export interface UserWhereInput {
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  primaryPhoneNumber?: Maybe<String>;
-  email?: Maybe<String>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-}>;
-
-export interface TravelCreateInput {
-  id?: Maybe<ID_Input>;
-  travelName: String;
-  travelDate: DateTimeInput;
-  travelCost: Float;
-  travelOwner: UserCreateOneWithoutOwnerTravelsInput;
-  passengers?: Maybe<UserCreateManyWithoutTravelsAsPassengerInput>;
-  isSharingCost?: Maybe<Boolean>;
-  isRecurrent?: Maybe<Boolean>;
-  recurrenceTimes?: Maybe<Int>;
-  recurrenceType?: Maybe<RecurrenceTypes>;
-}
-
-export interface UserCreateOneWithoutOwnerTravelsInput {
-  create?: Maybe<UserCreateWithoutOwnerTravelsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutOwnerTravelsInput {
-  id?: Maybe<ID_Input>;
-  firstName: String;
-  lastName: String;
-  primaryPhoneNumber?: Maybe<String>;
-  secondaryPhoneNumber?: Maybe<String>;
-  email: String;
-  password?: Maybe<String>;
-  emailIsVerified?: Maybe<Boolean>;
-  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-  travelsAsPassenger?: Maybe<TravelCreateManyWithoutPassengersInput>;
-  emailToken?: Maybe<String>;
-}
-
-export interface TravelCreateManyWithoutPassengersInput {
-  create?: Maybe<
-    TravelCreateWithoutPassengersInput[] | TravelCreateWithoutPassengersInput
-  >;
-  connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-}
-
-export interface TravelCreateWithoutPassengersInput {
-  id?: Maybe<ID_Input>;
-  travelName: String;
-  travelDate: DateTimeInput;
-  travelCost: Float;
-  travelOwner: UserCreateOneWithoutOwnerTravelsInput;
-  isSharingCost?: Maybe<Boolean>;
-  isRecurrent?: Maybe<Boolean>;
-  recurrenceTimes?: Maybe<Int>;
-  recurrenceType?: Maybe<RecurrenceTypes>;
-}
-
-export interface UserCreateManyWithoutTravelsAsPassengerInput {
-  create?: Maybe<
-    | UserCreateWithoutTravelsAsPassengerInput[]
-    | UserCreateWithoutTravelsAsPassengerInput
-  >;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutTravelsAsPassengerInput {
-  id?: Maybe<ID_Input>;
-  firstName: String;
-  lastName: String;
-  primaryPhoneNumber?: Maybe<String>;
-  secondaryPhoneNumber?: Maybe<String>;
-  email: String;
-  password?: Maybe<String>;
-  emailIsVerified?: Maybe<Boolean>;
-  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-  ownerTravels?: Maybe<TravelCreateManyWithoutTravelOwnerInput>;
-  emailToken?: Maybe<String>;
-}
-
 export interface TravelCreateManyWithoutTravelOwnerInput {
   create?: Maybe<
     TravelCreateWithoutTravelOwnerInput[] | TravelCreateWithoutTravelOwnerInput
   >;
   connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+}
+
+export interface TravelSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TravelWhereInput>;
+  AND?: Maybe<TravelSubscriptionWhereInput[] | TravelSubscriptionWhereInput>;
 }
 
 export interface TravelCreateWithoutTravelOwnerInput {
@@ -552,6 +482,23 @@ export interface TravelCreateWithoutTravelOwnerInput {
   recurrenceType?: Maybe<RecurrenceTypes>;
 }
 
+export interface UserUpdateInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  picture?: Maybe<String>;
+  primaryPhoneNumber?: Maybe<String>;
+  secondaryPhoneNumber?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  emailIsVerified?: Maybe<Boolean>;
+  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+  ownerTravels?: Maybe<TravelUpdateManyWithoutTravelOwnerInput>;
+  travelsAsPassenger?: Maybe<TravelUpdateManyWithoutPassengersInput>;
+  emailToken?: Maybe<String>;
+}
+
 export interface TravelUpdateInput {
   travelName?: Maybe<String>;
   travelDate?: Maybe<DateTimeInput>;
@@ -564,161 +511,7 @@ export interface TravelUpdateInput {
   recurrenceType?: Maybe<RecurrenceTypes>;
 }
 
-export interface UserUpdateOneRequiredWithoutOwnerTravelsInput {
-  create?: Maybe<UserCreateWithoutOwnerTravelsInput>;
-  update?: Maybe<UserUpdateWithoutOwnerTravelsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutOwnerTravelsInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutOwnerTravelsDataInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  primaryPhoneNumber?: Maybe<String>;
-  secondaryPhoneNumber?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  emailIsVerified?: Maybe<Boolean>;
-  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-  travelsAsPassenger?: Maybe<TravelUpdateManyWithoutPassengersInput>;
-  emailToken?: Maybe<String>;
-}
-
-export interface TravelUpdateManyWithoutPassengersInput {
-  create?: Maybe<
-    TravelCreateWithoutPassengersInput[] | TravelCreateWithoutPassengersInput
-  >;
-  delete?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  set?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  disconnect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  update?: Maybe<
-    | TravelUpdateWithWhereUniqueWithoutPassengersInput[]
-    | TravelUpdateWithWhereUniqueWithoutPassengersInput
-  >;
-  upsert?: Maybe<
-    | TravelUpsertWithWhereUniqueWithoutPassengersInput[]
-    | TravelUpsertWithWhereUniqueWithoutPassengersInput
-  >;
-  deleteMany?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
-  updateMany?: Maybe<
-    | TravelUpdateManyWithWhereNestedInput[]
-    | TravelUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface TravelUpdateWithWhereUniqueWithoutPassengersInput {
-  where: TravelWhereUniqueInput;
-  data: TravelUpdateWithoutPassengersDataInput;
-}
-
-export interface TravelUpdateWithoutPassengersDataInput {
-  travelName?: Maybe<String>;
-  travelDate?: Maybe<DateTimeInput>;
-  travelCost?: Maybe<Float>;
-  travelOwner?: Maybe<UserUpdateOneRequiredWithoutOwnerTravelsInput>;
-  isSharingCost?: Maybe<Boolean>;
-  isRecurrent?: Maybe<Boolean>;
-  recurrenceTimes?: Maybe<Int>;
-  recurrenceType?: Maybe<RecurrenceTypes>;
-}
-
-export interface TravelUpsertWithWhereUniqueWithoutPassengersInput {
-  where: TravelWhereUniqueInput;
-  update: TravelUpdateWithoutPassengersDataInput;
-  create: TravelCreateWithoutPassengersInput;
-}
-
-export interface TravelScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  travelName?: Maybe<String>;
-  travelName_not?: Maybe<String>;
-  travelName_in?: Maybe<String[] | String>;
-  travelName_not_in?: Maybe<String[] | String>;
-  travelName_lt?: Maybe<String>;
-  travelName_lte?: Maybe<String>;
-  travelName_gt?: Maybe<String>;
-  travelName_gte?: Maybe<String>;
-  travelName_contains?: Maybe<String>;
-  travelName_not_contains?: Maybe<String>;
-  travelName_starts_with?: Maybe<String>;
-  travelName_not_starts_with?: Maybe<String>;
-  travelName_ends_with?: Maybe<String>;
-  travelName_not_ends_with?: Maybe<String>;
-  travelDate?: Maybe<DateTimeInput>;
-  travelDate_not?: Maybe<DateTimeInput>;
-  travelDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  travelDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  travelDate_lt?: Maybe<DateTimeInput>;
-  travelDate_lte?: Maybe<DateTimeInput>;
-  travelDate_gt?: Maybe<DateTimeInput>;
-  travelDate_gte?: Maybe<DateTimeInput>;
-  travelCost?: Maybe<Float>;
-  travelCost_not?: Maybe<Float>;
-  travelCost_in?: Maybe<Float[] | Float>;
-  travelCost_not_in?: Maybe<Float[] | Float>;
-  travelCost_lt?: Maybe<Float>;
-  travelCost_lte?: Maybe<Float>;
-  travelCost_gt?: Maybe<Float>;
-  travelCost_gte?: Maybe<Float>;
-  isSharingCost?: Maybe<Boolean>;
-  isSharingCost_not?: Maybe<Boolean>;
-  isRecurrent?: Maybe<Boolean>;
-  isRecurrent_not?: Maybe<Boolean>;
-  recurrenceTimes?: Maybe<Int>;
-  recurrenceTimes_not?: Maybe<Int>;
-  recurrenceTimes_in?: Maybe<Int[] | Int>;
-  recurrenceTimes_not_in?: Maybe<Int[] | Int>;
-  recurrenceTimes_lt?: Maybe<Int>;
-  recurrenceTimes_lte?: Maybe<Int>;
-  recurrenceTimes_gt?: Maybe<Int>;
-  recurrenceTimes_gte?: Maybe<Int>;
-  recurrenceType?: Maybe<RecurrenceTypes>;
-  recurrenceType_not?: Maybe<RecurrenceTypes>;
-  recurrenceType_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
-  recurrenceType_not_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
-  OR?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
-  NOT?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
-}
-
-export interface TravelUpdateManyWithWhereNestedInput {
-  where: TravelScalarWhereInput;
-  data: TravelUpdateManyDataInput;
-}
-
-export interface TravelUpdateManyDataInput {
+export interface TravelUpdateManyMutationInput {
   travelName?: Maybe<String>;
   travelDate?: Maybe<DateTimeInput>;
   travelCost?: Maybe<Float>;
@@ -726,82 +519,6 @@ export interface TravelUpdateManyDataInput {
   isRecurrent?: Maybe<Boolean>;
   recurrenceTimes?: Maybe<Int>;
   recurrenceType?: Maybe<RecurrenceTypes>;
-}
-
-export interface UserUpsertWithoutOwnerTravelsInput {
-  update: UserUpdateWithoutOwnerTravelsDataInput;
-  create: UserCreateWithoutOwnerTravelsInput;
-}
-
-export interface UserUpdateManyWithoutTravelsAsPassengerInput {
-  create?: Maybe<
-    | UserCreateWithoutTravelsAsPassengerInput[]
-    | UserCreateWithoutTravelsAsPassengerInput
-  >;
-  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  update?: Maybe<
-    | UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput[]
-    | UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput
-  >;
-  upsert?: Maybe<
-    | UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput[]
-    | UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput
-  >;
-  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  updateMany?: Maybe<
-    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutTravelsAsPassengerDataInput;
-}
-
-export interface UserUpdateWithoutTravelsAsPassengerDataInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  primaryPhoneNumber?: Maybe<String>;
-  secondaryPhoneNumber?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  emailIsVerified?: Maybe<Boolean>;
-  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-  ownerTravels?: Maybe<TravelUpdateManyWithoutTravelOwnerInput>;
-  emailToken?: Maybe<String>;
-}
-
-export interface TravelUpdateManyWithoutTravelOwnerInput {
-  create?: Maybe<
-    TravelCreateWithoutTravelOwnerInput[] | TravelCreateWithoutTravelOwnerInput
-  >;
-  delete?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  set?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  disconnect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
-  update?: Maybe<
-    | TravelUpdateWithWhereUniqueWithoutTravelOwnerInput[]
-    | TravelUpdateWithWhereUniqueWithoutTravelOwnerInput
-  >;
-  upsert?: Maybe<
-    | TravelUpsertWithWhereUniqueWithoutTravelOwnerInput[]
-    | TravelUpsertWithWhereUniqueWithoutTravelOwnerInput
-  >;
-  deleteMany?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
-  updateMany?: Maybe<
-    | TravelUpdateManyWithWhereNestedInput[]
-    | TravelUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface TravelUpdateWithWhereUniqueWithoutTravelOwnerInput {
-  where: TravelWhereUniqueInput;
-  data: TravelUpdateWithoutTravelOwnerDataInput;
 }
 
 export interface TravelUpdateWithoutTravelOwnerDataInput {
@@ -815,16 +532,25 @@ export interface TravelUpdateWithoutTravelOwnerDataInput {
   recurrenceType?: Maybe<RecurrenceTypes>;
 }
 
-export interface TravelUpsertWithWhereUniqueWithoutTravelOwnerInput {
-  where: TravelWhereUniqueInput;
-  update: TravelUpdateWithoutTravelOwnerDataInput;
-  create: TravelCreateWithoutTravelOwnerInput;
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
 }
 
-export interface UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutTravelsAsPassengerDataInput;
-  create: UserCreateWithoutTravelsAsPassengerInput;
+export interface UserUpdateWithoutOwnerTravelsDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  picture?: Maybe<String>;
+  primaryPhoneNumber?: Maybe<String>;
+  secondaryPhoneNumber?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  emailIsVerified?: Maybe<Boolean>;
+  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+  travelsAsPassenger?: Maybe<TravelUpdateManyWithoutPassengersInput>;
+  emailToken?: Maybe<String>;
 }
 
 export interface UserScalarWhereInput {
@@ -870,6 +596,20 @@ export interface UserScalarWhereInput {
   lastName_not_starts_with?: Maybe<String>;
   lastName_ends_with?: Maybe<String>;
   lastName_not_ends_with?: Maybe<String>;
+  picture?: Maybe<String>;
+  picture_not?: Maybe<String>;
+  picture_in?: Maybe<String[] | String>;
+  picture_not_in?: Maybe<String[] | String>;
+  picture_lt?: Maybe<String>;
+  picture_lte?: Maybe<String>;
+  picture_gt?: Maybe<String>;
+  picture_gte?: Maybe<String>;
+  picture_contains?: Maybe<String>;
+  picture_not_contains?: Maybe<String>;
+  picture_starts_with?: Maybe<String>;
+  picture_not_starts_with?: Maybe<String>;
+  picture_ends_with?: Maybe<String>;
+  picture_not_ends_with?: Maybe<String>;
   primaryPhoneNumber?: Maybe<String>;
   primaryPhoneNumber_not?: Maybe<String>;
   primaryPhoneNumber_in?: Maybe<String[] | String>;
@@ -993,14 +733,255 @@ export interface UserScalarWhereInput {
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
 }
 
-export interface UserUpdateManyWithWhereNestedInput {
-  where: UserScalarWhereInput;
-  data: UserUpdateManyDataInput;
+export interface TravelUpdateManyWithoutPassengersInput {
+  create?: Maybe<
+    TravelCreateWithoutPassengersInput[] | TravelCreateWithoutPassengersInput
+  >;
+  delete?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  set?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  disconnect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+  update?: Maybe<
+    | TravelUpdateWithWhereUniqueWithoutPassengersInput[]
+    | TravelUpdateWithWhereUniqueWithoutPassengersInput
+  >;
+  upsert?: Maybe<
+    | TravelUpsertWithWhereUniqueWithoutPassengersInput[]
+    | TravelUpsertWithWhereUniqueWithoutPassengersInput
+  >;
+  deleteMany?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
+  updateMany?: Maybe<
+    | TravelUpdateManyWithWhereNestedInput[]
+    | TravelUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface UserUpdateManyDataInput {
+export interface TravelUpsertWithWhereUniqueWithoutTravelOwnerInput {
+  where: TravelWhereUniqueInput;
+  update: TravelUpdateWithoutTravelOwnerDataInput;
+  create: TravelCreateWithoutTravelOwnerInput;
+}
+
+export interface TravelUpdateWithWhereUniqueWithoutTravelOwnerInput {
+  where: TravelWhereUniqueInput;
+  data: TravelUpdateWithoutTravelOwnerDataInput;
+}
+
+export interface TravelCreateInput {
+  id?: Maybe<ID_Input>;
+  travelName: String;
+  travelDate: DateTimeInput;
+  travelCost: Float;
+  travelOwner: UserCreateOneWithoutOwnerTravelsInput;
+  passengers?: Maybe<UserCreateManyWithoutTravelsAsPassengerInput>;
+  isSharingCost?: Maybe<Boolean>;
+  isRecurrent?: Maybe<Boolean>;
+  recurrenceTimes?: Maybe<Int>;
+  recurrenceType?: Maybe<RecurrenceTypes>;
+}
+
+export interface TravelUpdateWithoutPassengersDataInput {
+  travelName?: Maybe<String>;
+  travelDate?: Maybe<DateTimeInput>;
+  travelCost?: Maybe<Float>;
+  travelOwner?: Maybe<UserUpdateOneRequiredWithoutOwnerTravelsInput>;
+  isSharingCost?: Maybe<Boolean>;
+  isRecurrent?: Maybe<Boolean>;
+  recurrenceTimes?: Maybe<Int>;
+  recurrenceType?: Maybe<RecurrenceTypes>;
+}
+
+export interface UserCreateWithoutOwnerTravelsInput {
+  id?: Maybe<ID_Input>;
+  firstName: String;
+  lastName: String;
+  picture?: Maybe<String>;
+  primaryPhoneNumber?: Maybe<String>;
+  secondaryPhoneNumber?: Maybe<String>;
+  email: String;
+  password?: Maybe<String>;
+  emailIsVerified?: Maybe<Boolean>;
+  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+  travelsAsPassenger?: Maybe<TravelCreateManyWithoutPassengersInput>;
+  emailToken?: Maybe<String>;
+}
+
+export interface TravelUpsertWithWhereUniqueWithoutPassengersInput {
+  where: TravelWhereUniqueInput;
+  update: TravelUpdateWithoutPassengersDataInput;
+  create: TravelCreateWithoutPassengersInput;
+}
+
+export interface TravelWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  travelName?: Maybe<String>;
+  travelName_not?: Maybe<String>;
+  travelName_in?: Maybe<String[] | String>;
+  travelName_not_in?: Maybe<String[] | String>;
+  travelName_lt?: Maybe<String>;
+  travelName_lte?: Maybe<String>;
+  travelName_gt?: Maybe<String>;
+  travelName_gte?: Maybe<String>;
+  travelName_contains?: Maybe<String>;
+  travelName_not_contains?: Maybe<String>;
+  travelName_starts_with?: Maybe<String>;
+  travelName_not_starts_with?: Maybe<String>;
+  travelName_ends_with?: Maybe<String>;
+  travelName_not_ends_with?: Maybe<String>;
+  travelDate?: Maybe<DateTimeInput>;
+  travelDate_not?: Maybe<DateTimeInput>;
+  travelDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  travelDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  travelDate_lt?: Maybe<DateTimeInput>;
+  travelDate_lte?: Maybe<DateTimeInput>;
+  travelDate_gt?: Maybe<DateTimeInput>;
+  travelDate_gte?: Maybe<DateTimeInput>;
+  travelCost?: Maybe<Float>;
+  travelCost_not?: Maybe<Float>;
+  travelCost_in?: Maybe<Float[] | Float>;
+  travelCost_not_in?: Maybe<Float[] | Float>;
+  travelCost_lt?: Maybe<Float>;
+  travelCost_lte?: Maybe<Float>;
+  travelCost_gt?: Maybe<Float>;
+  travelCost_gte?: Maybe<Float>;
+  travelOwner?: Maybe<UserWhereInput>;
+  passengers_some?: Maybe<UserWhereInput>;
+  isSharingCost?: Maybe<Boolean>;
+  isSharingCost_not?: Maybe<Boolean>;
+  isRecurrent?: Maybe<Boolean>;
+  isRecurrent_not?: Maybe<Boolean>;
+  recurrenceTimes?: Maybe<Int>;
+  recurrenceTimes_not?: Maybe<Int>;
+  recurrenceTimes_in?: Maybe<Int[] | Int>;
+  recurrenceTimes_not_in?: Maybe<Int[] | Int>;
+  recurrenceTimes_lt?: Maybe<Int>;
+  recurrenceTimes_lte?: Maybe<Int>;
+  recurrenceTimes_gt?: Maybe<Int>;
+  recurrenceTimes_gte?: Maybe<Int>;
+  recurrenceType?: Maybe<RecurrenceTypes>;
+  recurrenceType_not?: Maybe<RecurrenceTypes>;
+  recurrenceType_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
+  recurrenceType_not_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<TravelWhereInput[] | TravelWhereInput>;
+}
+
+export interface TravelScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  travelName?: Maybe<String>;
+  travelName_not?: Maybe<String>;
+  travelName_in?: Maybe<String[] | String>;
+  travelName_not_in?: Maybe<String[] | String>;
+  travelName_lt?: Maybe<String>;
+  travelName_lte?: Maybe<String>;
+  travelName_gt?: Maybe<String>;
+  travelName_gte?: Maybe<String>;
+  travelName_contains?: Maybe<String>;
+  travelName_not_contains?: Maybe<String>;
+  travelName_starts_with?: Maybe<String>;
+  travelName_not_starts_with?: Maybe<String>;
+  travelName_ends_with?: Maybe<String>;
+  travelName_not_ends_with?: Maybe<String>;
+  travelDate?: Maybe<DateTimeInput>;
+  travelDate_not?: Maybe<DateTimeInput>;
+  travelDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  travelDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  travelDate_lt?: Maybe<DateTimeInput>;
+  travelDate_lte?: Maybe<DateTimeInput>;
+  travelDate_gt?: Maybe<DateTimeInput>;
+  travelDate_gte?: Maybe<DateTimeInput>;
+  travelCost?: Maybe<Float>;
+  travelCost_not?: Maybe<Float>;
+  travelCost_in?: Maybe<Float[] | Float>;
+  travelCost_not_in?: Maybe<Float[] | Float>;
+  travelCost_lt?: Maybe<Float>;
+  travelCost_lte?: Maybe<Float>;
+  travelCost_gt?: Maybe<Float>;
+  travelCost_gte?: Maybe<Float>;
+  isSharingCost?: Maybe<Boolean>;
+  isSharingCost_not?: Maybe<Boolean>;
+  isRecurrent?: Maybe<Boolean>;
+  isRecurrent_not?: Maybe<Boolean>;
+  recurrenceTimes?: Maybe<Int>;
+  recurrenceTimes_not?: Maybe<Int>;
+  recurrenceTimes_in?: Maybe<Int[] | Int>;
+  recurrenceTimes_not_in?: Maybe<Int[] | Int>;
+  recurrenceTimes_lt?: Maybe<Int>;
+  recurrenceTimes_lte?: Maybe<Int>;
+  recurrenceTimes_gt?: Maybe<Int>;
+  recurrenceTimes_gte?: Maybe<Int>;
+  recurrenceType?: Maybe<RecurrenceTypes>;
+  recurrenceType_not?: Maybe<RecurrenceTypes>;
+  recurrenceType_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
+  recurrenceType_not_in?: Maybe<RecurrenceTypes[] | RecurrenceTypes>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
+  OR?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
+  NOT?: Maybe<TravelScalarWhereInput[] | TravelScalarWhereInput>;
+}
+
+export interface UserUpdateManyMutationInput {
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
+  picture?: Maybe<String>;
   primaryPhoneNumber?: Maybe<String>;
   secondaryPhoneNumber?: Maybe<String>;
   email?: Maybe<String>;
@@ -1012,7 +993,27 @@ export interface UserUpdateManyDataInput {
   emailToken?: Maybe<String>;
 }
 
-export interface TravelUpdateManyMutationInput {
+export interface TravelUpdateManyWithWhereNestedInput {
+  where: TravelScalarWhereInput;
+  data: TravelUpdateManyDataInput;
+}
+
+export interface UserUpdateManyDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  picture?: Maybe<String>;
+  primaryPhoneNumber?: Maybe<String>;
+  secondaryPhoneNumber?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  emailIsVerified?: Maybe<Boolean>;
+  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+  emailToken?: Maybe<String>;
+}
+
+export interface TravelUpdateManyDataInput {
   travelName?: Maybe<String>;
   travelDate?: Maybe<DateTimeInput>;
   travelCost?: Maybe<Float>;
@@ -1022,10 +1023,86 @@ export interface TravelUpdateManyMutationInput {
   recurrenceType?: Maybe<RecurrenceTypes>;
 }
 
+export interface UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutTravelsAsPassengerDataInput;
+  create: UserCreateWithoutTravelsAsPassengerInput;
+}
+
+export interface UserCreateOneWithoutOwnerTravelsInput {
+  create?: Maybe<UserCreateWithoutOwnerTravelsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutTravelsAsPassengerDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  picture?: Maybe<String>;
+  primaryPhoneNumber?: Maybe<String>;
+  secondaryPhoneNumber?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  emailIsVerified?: Maybe<Boolean>;
+  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+  ownerTravels?: Maybe<TravelUpdateManyWithoutTravelOwnerInput>;
+  emailToken?: Maybe<String>;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutTravelsAsPassengerDataInput;
+}
+
+export interface UserUpdateManyWithoutTravelsAsPassengerInput {
+  create?: Maybe<
+    | UserCreateWithoutTravelsAsPassengerInput[]
+    | UserCreateWithoutTravelsAsPassengerInput
+  >;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput[]
+    | UserUpdateWithWhereUniqueWithoutTravelsAsPassengerInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput[]
+    | UserUpsertWithWhereUniqueWithoutTravelsAsPassengerInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpsertWithoutOwnerTravelsInput {
+  update: UserUpdateWithoutOwnerTravelsDataInput;
+  create: UserCreateWithoutOwnerTravelsInput;
+}
+
+export interface TravelCreateManyWithoutPassengersInput {
+  create?: Maybe<
+    TravelCreateWithoutPassengersInput[] | TravelCreateWithoutPassengersInput
+  >;
+  connect?: Maybe<TravelWhereUniqueInput[] | TravelWhereUniqueInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  primaryPhoneNumber?: Maybe<String>;
+  email?: Maybe<String>;
+  googleId?: Maybe<String>;
+  facebookId?: Maybe<String>;
+}>;
+
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   firstName: String;
   lastName: String;
+  picture?: Maybe<String>;
   primaryPhoneNumber?: Maybe<String>;
   secondaryPhoneNumber?: Maybe<String>;
   email: String;
@@ -1039,45 +1116,6 @@ export interface UserCreateInput {
   emailToken?: Maybe<String>;
 }
 
-export interface UserUpdateInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  primaryPhoneNumber?: Maybe<String>;
-  secondaryPhoneNumber?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  emailIsVerified?: Maybe<Boolean>;
-  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-  ownerTravels?: Maybe<TravelUpdateManyWithoutTravelOwnerInput>;
-  travelsAsPassenger?: Maybe<TravelUpdateManyWithoutPassengersInput>;
-  emailToken?: Maybe<String>;
-}
-
-export interface UserUpdateManyMutationInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  primaryPhoneNumber?: Maybe<String>;
-  secondaryPhoneNumber?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  emailIsVerified?: Maybe<Boolean>;
-  primaryPhoneNumberIsVerified?: Maybe<Boolean>;
-  googleId?: Maybe<String>;
-  facebookId?: Maybe<String>;
-  emailToken?: Maybe<String>;
-}
-
-export interface TravelSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TravelWhereInput>;
-  AND?: Maybe<TravelSubscriptionWhereInput[] | TravelSubscriptionWhereInput>;
-}
-
 export interface UserSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -1089,6 +1127,231 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  firstName: String;
+  lastName: String;
+  picture?: String;
+  primaryPhoneNumber?: String;
+  secondaryPhoneNumber?: String;
+  email: String;
+  password?: String;
+  emailIsVerified?: Boolean;
+  primaryPhoneNumberIsVerified?: Boolean;
+  googleId?: String;
+  facebookId?: String;
+  emailToken?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  picture: () => Promise<String>;
+  primaryPhoneNumber: () => Promise<String>;
+  secondaryPhoneNumber: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  emailIsVerified: () => Promise<Boolean>;
+  primaryPhoneNumberIsVerified: () => Promise<Boolean>;
+  googleId: () => Promise<String>;
+  facebookId: () => Promise<String>;
+  emailToken: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+  primaryPhoneNumber: () => Promise<AsyncIterator<String>>;
+  secondaryPhoneNumber: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  emailIsVerified: () => Promise<AsyncIterator<Boolean>>;
+  primaryPhoneNumberIsVerified: () => Promise<AsyncIterator<Boolean>>;
+  googleId: () => Promise<AsyncIterator<String>>;
+  facebookId: () => Promise<AsyncIterator<String>>;
+  emailToken: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface TravelConnection {
+  pageInfo: PageInfo;
+  edges: TravelEdge[];
+}
+
+export interface TravelConnectionPromise
+  extends Promise<TravelConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TravelEdge>>() => T;
+  aggregate: <T = AggregateTravelPromise>() => T;
+}
+
+export interface TravelConnectionSubscription
+  extends Promise<AsyncIterator<TravelConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TravelEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTravelSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  firstName: String;
+  lastName: String;
+  picture?: String;
+  primaryPhoneNumber?: String;
+  secondaryPhoneNumber?: String;
+  email: String;
+  password?: String;
+  emailIsVerified?: Boolean;
+  primaryPhoneNumberIsVerified?: Boolean;
+  googleId?: String;
+  facebookId?: String;
+  emailToken?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  picture: () => Promise<String>;
+  primaryPhoneNumber: () => Promise<String>;
+  secondaryPhoneNumber: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  emailIsVerified: () => Promise<Boolean>;
+  primaryPhoneNumberIsVerified: () => Promise<Boolean>;
+  googleId: () => Promise<String>;
+  facebookId: () => Promise<String>;
+  ownerTravels: <T = FragmentableArray<Travel>>(args?: {
+    where?: TravelWhereInput;
+    orderBy?: TravelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  travelsAsPassenger: <T = FragmentableArray<Travel>>(args?: {
+    where?: TravelWhereInput;
+    orderBy?: TravelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  emailToken: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+  primaryPhoneNumber: () => Promise<AsyncIterator<String>>;
+  secondaryPhoneNumber: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  emailIsVerified: () => Promise<AsyncIterator<Boolean>>;
+  primaryPhoneNumberIsVerified: () => Promise<AsyncIterator<Boolean>>;
+  googleId: () => Promise<AsyncIterator<String>>;
+  facebookId: () => Promise<AsyncIterator<String>>;
+  ownerTravels: <T = Promise<AsyncIterator<TravelSubscription>>>(args?: {
+    where?: TravelWhereInput;
+    orderBy?: TravelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  travelsAsPassenger: <T = Promise<AsyncIterator<TravelSubscription>>>(args?: {
+    where?: TravelWhereInput;
+    orderBy?: TravelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  emailToken: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  picture: () => Promise<String>;
+  primaryPhoneNumber: () => Promise<String>;
+  secondaryPhoneNumber: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  emailIsVerified: () => Promise<Boolean>;
+  primaryPhoneNumberIsVerified: () => Promise<Boolean>;
+  googleId: () => Promise<String>;
+  facebookId: () => Promise<String>;
+  ownerTravels: <T = FragmentableArray<Travel>>(args?: {
+    where?: TravelWhereInput;
+    orderBy?: TravelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  travelsAsPassenger: <T = FragmentableArray<Travel>>(args?: {
+    where?: TravelWhereInput;
+    orderBy?: TravelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  emailToken: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface Travel {
@@ -1177,247 +1440,6 @@ export interface TravelNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface User {
-  id: ID_Output;
-  firstName: String;
-  lastName: String;
-  primaryPhoneNumber?: String;
-  secondaryPhoneNumber?: String;
-  email: String;
-  password?: String;
-  emailIsVerified?: Boolean;
-  primaryPhoneNumberIsVerified?: Boolean;
-  googleId?: String;
-  facebookId?: String;
-  emailToken?: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  primaryPhoneNumber: () => Promise<String>;
-  secondaryPhoneNumber: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  emailIsVerified: () => Promise<Boolean>;
-  primaryPhoneNumberIsVerified: () => Promise<Boolean>;
-  googleId: () => Promise<String>;
-  facebookId: () => Promise<String>;
-  ownerTravels: <T = FragmentableArray<Travel>>(args?: {
-    where?: TravelWhereInput;
-    orderBy?: TravelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  travelsAsPassenger: <T = FragmentableArray<Travel>>(args?: {
-    where?: TravelWhereInput;
-    orderBy?: TravelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  emailToken: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  primaryPhoneNumber: () => Promise<AsyncIterator<String>>;
-  secondaryPhoneNumber: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  emailIsVerified: () => Promise<AsyncIterator<Boolean>>;
-  primaryPhoneNumberIsVerified: () => Promise<AsyncIterator<Boolean>>;
-  googleId: () => Promise<AsyncIterator<String>>;
-  facebookId: () => Promise<AsyncIterator<String>>;
-  ownerTravels: <T = Promise<AsyncIterator<TravelSubscription>>>(args?: {
-    where?: TravelWhereInput;
-    orderBy?: TravelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  travelsAsPassenger: <T = Promise<AsyncIterator<TravelSubscription>>>(args?: {
-    where?: TravelWhereInput;
-    orderBy?: TravelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  emailToken: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  primaryPhoneNumber: () => Promise<String>;
-  secondaryPhoneNumber: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  emailIsVerified: () => Promise<Boolean>;
-  primaryPhoneNumberIsVerified: () => Promise<Boolean>;
-  googleId: () => Promise<String>;
-  facebookId: () => Promise<String>;
-  ownerTravels: <T = FragmentableArray<Travel>>(args?: {
-    where?: TravelWhereInput;
-    orderBy?: TravelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  travelsAsPassenger: <T = FragmentableArray<Travel>>(args?: {
-    where?: TravelWhereInput;
-    orderBy?: TravelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  emailToken: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface TravelConnection {
-  pageInfo: PageInfo;
-  edges: TravelEdge[];
-}
-
-export interface TravelConnectionPromise
-  extends Promise<TravelConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TravelEdge>>() => T;
-  aggregate: <T = AggregateTravelPromise>() => T;
-}
-
-export interface TravelConnectionSubscription
-  extends Promise<AsyncIterator<TravelConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TravelEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTravelSubscription>() => T;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TravelEdge {
-  node: Travel;
-  cursor: String;
-}
-
-export interface TravelEdgePromise extends Promise<TravelEdge>, Fragmentable {
-  node: <T = TravelPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TravelEdgeSubscription
-  extends Promise<AsyncIterator<TravelEdge>>,
-    Fragmentable {
-  node: <T = TravelSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateTravel {
-  count: Int;
-}
-
-export interface AggregateTravelPromise
-  extends Promise<AggregateTravel>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTravelSubscription
-  extends Promise<AsyncIterator<AggregateTravel>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface AggregateUser {
   count: Int;
 }
@@ -1432,22 +1454,6 @@ export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface TravelSubscriptionPayload {
@@ -1473,6 +1479,23 @@ export interface TravelSubscriptionPayloadSubscription
   node: <T = TravelSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = TravelPreviousValuesSubscription>() => T;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface TravelPreviousValues {
@@ -1543,71 +1566,105 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  firstName: String;
-  lastName: String;
-  primaryPhoneNumber?: String;
-  secondaryPhoneNumber?: String;
-  email: String;
-  password?: String;
-  emailIsVerified?: Boolean;
-  primaryPhoneNumberIsVerified?: Boolean;
-  googleId?: String;
-  facebookId?: String;
-  emailToken?: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  primaryPhoneNumber: () => Promise<String>;
-  secondaryPhoneNumber: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  emailIsVerified: () => Promise<Boolean>;
-  primaryPhoneNumberIsVerified: () => Promise<Boolean>;
-  googleId: () => Promise<String>;
-  facebookId: () => Promise<String>;
-  emailToken: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  primaryPhoneNumber: () => Promise<AsyncIterator<String>>;
-  secondaryPhoneNumber: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  emailIsVerified: () => Promise<AsyncIterator<Boolean>>;
-  primaryPhoneNumberIsVerified: () => Promise<AsyncIterator<Boolean>>;
-  googleId: () => Promise<AsyncIterator<String>>;
-  facebookId: () => Promise<AsyncIterator<String>>;
-  emailToken: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TravelEdge {
+  node: Travel;
+  cursor: String;
+}
+
+export interface TravelEdgePromise extends Promise<TravelEdge>, Fragmentable {
+  node: <T = TravelPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TravelEdgeSubscription
+  extends Promise<AsyncIterator<TravelEdge>>,
+    Fragmentable {
+  node: <T = TravelSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateTravel {
+  count: Int;
+}
+
+export interface AggregateTravelPromise
+  extends Promise<AggregateTravel>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTravelSubscription
+  extends Promise<AsyncIterator<AggregateTravel>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
+export type Long = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1623,18 +1680,6 @@ export type DateTimeOutput = string;
 The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
 */
 export type Float = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-export type Long = string;
 
 /**
  * Model Metadata
